@@ -1696,7 +1696,7 @@
   - `newVal >= 1000`：`shipMessage` 顯示「🎉 已達免運門檻，免收運費！」， `shipFee = 0`
   - `newVal < 1000`：`shipMessage` 顯示「🚚 運費 NT$ 60，差 $ XX 元即可免運」（XX 為差額）， `shipFee=60`
   - `newVal >= 2000`：`discountMessage` 顯示「已享折扣 XX 元」， `discountFee = cartStore.total * 0.1`
-  - `newVal < 2000`：`discountMessage` 顯示「差 $ XX 元即可享 9 折優惠」， `discountFee = 0`
+  - `newVal < 2000`：`discountMessage` 顯示「差 $ XX 元，即可享 9 折優惠」， `discountFee = 0`
   - 將 `oldVal` 以 `console.log` 印出
 
 <!--

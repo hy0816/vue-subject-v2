@@ -2198,7 +2198,7 @@
   - 為「商品管理」頁面建立路由設定以及在 `App.vue` 導覽列使用 `<RouterLink>` 建立連結
   - 使用 `ref` 宣告 `showModal` 變數，預設為 `false`
   - 為「新增」按鈕加上 `@click` 事件監聽，當按下新增時，`showModal = true`
-  - 使用 `AppModal.vue` 插槽子元件，放入以下內容：
+  - 使用 `AppModal.vue` ，以及自訂內容放入插槽：
 
     ```html
     <AppModal :show="showModal" @close="showModal = false">

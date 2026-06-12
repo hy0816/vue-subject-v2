@@ -2255,13 +2255,13 @@
 
   ##### _API 清單_
 
-  | 操作     | 方法   | 路由                | 請求 Body                                | 說明             |
-  | -------- | ------ | ------------------- | ---------------------------------------- | ---------------- |
-  | 查詢全部 | GET    | `/api/products`     | —                                        | 取得所有商品列表 |
-  | 查詢單筆 | GET    | `/api/products/:id` | —                                        | 取得指定商品     |
-  | 新增     | POST   | `/api/products`     | `{ name, category, price, stock, desc }` | 新增商品         |
-  | 修改     | PUT    | `/api/products/:id` | `{ name, category, price, stock, desc }` | 修改商品         |
-  | 刪除     | DELETE | `/api/products/:id` | —                                        | 刪除商品         |
+  | 操作     | 方法   | 路由               | 請求 Body                                | 說明             |
+  | -------- | ------ | ------------------ | ---------------------------------------- | ---------------- |
+  | 查詢全部 | GET    | `/api/product`     | —                                        | 取得所有商品列表 |
+  | 查詢單筆 | GET    | `/api/product/:id` | —                                        | 取得指定商品     |
+  | 新增     | POST   | `/api/product`     | `{ name, category, price, stock, desc }` | 新增商品         |
+  | 修改     | PUT    | `/api/product/:id` | `{ name, category, price, stock, desc }` | 修改商品         |
+  | 刪除     | DELETE | `/api/product/:id` | —                                        | 刪除商品         |
 
   ##### _查詢（Read）_
   - 宣告 `products` 陣列（預設空陣列）
@@ -2273,7 +2273,7 @@
     const products = ref([])
 
     async function fetchProducts() {
-      const res = await axios.get("https://localhost/api/products")
+      const res = await axios.get("https://localhost/api/product")
       products.value = res.data
     }
 
@@ -2296,7 +2296,7 @@
 
   - 建立 `addProduct` 方法，用 `axios.post` 送出新商品
     ```js
-    axios.post("https://localhost/api/products", form)
+    axios.post("https://localhost/api/product", form)
     ```
   - 成功後清空 `form` 並呼叫 `fetchProducts` 重新載入列表
 
@@ -2307,14 +2307,14 @@
   - 用 `v-if` 判斷 `editId` 決定表單顯示「新增」或「儲存」按鈕
 
     ```js
-    await axios.get(`https://localhost/api/products/${id}`)
+    await axios.get(`https://localhost/api/product/${id}`)
     ```
 
   ##### _刪除（Delete）_
   - 建立 `deleteProduct(id)` 方法，跳出確認框後呼叫 `axios.delete`
 
     ```js
-    await axios.delete(`https://localhost/api/products/${id}`)
+    await axios.delete(`https://localhost/api/product/${id}`)
     ```
 
 <!--

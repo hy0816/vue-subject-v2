@@ -2478,11 +2478,11 @@ sequenceDiagram
 
 - **可用測試帳號：**
 
-  | 帳號   | 密碼      | 角色   | 可進入          |
-  | ------ | --------- | ------ | --------------- |
-  | orange | 1234      | member | 前台商城 /shop  |
-  | flower | 1234      | member | 前台商城 /shop  |
-  | admin  | admin1234 | admin  | 後台管理 /admin |
+  | 帳號   | 密碼      | 角色   | 可進入           |
+  | ------ | --------- | ------ | ---------------- |
+  | orange | 1234      | member | 前台商城 /member |
+  | flower | 1234      | member | 前台商城 /member |
+  | admin  | admin1234 | admin  | 後台管理 /admin  |
 
 #### 📝建立登入及登出
 
@@ -2508,7 +2508,6 @@ sequenceDiagram
 
       <button class="btn btn-primary w-100 py-2" type="button">登入</button>
     </div>
-    `
     ```
 
   - 在 `src\router\index.js` 路由中，加入 `login` 路由設定
@@ -2612,6 +2611,29 @@ sequenceDiagram
   <div class="text-center d-none">Now: By AI Name(Model Name)</div>
 -->
 
+#### 📝將 useAuthStore 的 token 放至 api 請求攔截器中
+
+- **情境：**
+
+  > 使用者登入後，後續所有 API 請求都需要帶上 Token 進行身份驗證。透過請求攔截器自動將 Token 添加至每個請求的 Authorization Header，避免重複在各個 API 呼叫中手動添加。
+
+- **實作：**
+  - 在 `api.js` 的請求攔截器（request interceptor）token 補上 useAuthStore 的 token：
+
+    ```js
+    api.interceptors.request.use(
+      (config) => {
+        const authStore = useAuthStore()
+        const token = authStore.token
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`
+        }
+        return config
+      },
+      (error) => Promise.reject(error),
+    )
+    ```
+
 #### 📝路由守衛（Navigation Guard）
 
 - **情境：**
@@ -2622,16 +2644,16 @@ sequenceDiagram
   - 在 `src/router/index.js` 中，對路由設定 `meta` 標記：
 
     ```js
-    // 為需要 member 角色的路由加上 meta: { requiresMember: true }
+    // 為需要 member 角色的路由加上 meta: { requireMember: true }
     {
       path: '/member',
-      meta: { requiresMember: true },
+      meta: { requireMember: true },
       children: [ ...  ],
     },
-    // 為需要 admin 角色的路由加上 meta: { requiresAdmin: true }
+    // 為需要 admin 角色的路由加上 meta: { requireAdmin: true }
     {
       path: '/admin',
-      meta: { requiresAdmin: true },
+      meta: { requireAdmin: true },
     }
     ```
 
@@ -2650,11 +2672,14 @@ sequenceDiagram
     router.beforeEach((to) => {
       const authStore = useAuthStore()
       // 需要 member 角色（未登入或非 member → 導向登入）
-      if (to.meta.requiresMember && !authStore.isLoggedIn) {
+      if (
+        (to.meta.requireMember && !authStore.isLoggedIn)||
+        (to.meta.requireMember && authStore.isLoggedIn && authStore.isAdmin)
+      ) {
         return { path: "/login" }
       }
       // 需要 admin 角色（未登入或非 admin → 導向登入）
-      if (to.meta.requiresAdmin && !authStore.isAdmin) {
+      if (to.meta.requireAdmin && !authStore.isAdmin) {
         return { path: "/login" }
       }
     })
@@ -2693,7 +2718,7 @@ sequenceDiagram
 
 - **情境：**
 
-  > 系統已導入帳號全線控管，因此，必須針對特定頁面預先隱藏，或特定條件時才出現。
+  > 系統已導入帳號權限控管，因此，必須針對特定頁面預先隱藏，或特定條件時才出現。
 
 - **實作：** 使用 `App.vue`
   - 當使用者登入狀態 = 未登入 `isLoggedIn = false` 時，顯示「登入」、「註冊」連結

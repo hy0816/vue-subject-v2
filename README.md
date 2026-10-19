@@ -659,93 +659,6 @@
         </div>
       </div>
     </div>
-
-    <!-- 發票 Modal -->
-    <div
-      class="modal fade show d-block"
-      id="staticBackdrop"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-      tabindex="-1"
-      aria-labelledby="staticBackdropLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="d-flex justify-content-end">
-            <button
-              type="button"
-              class="btn-close m-3"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body mb-4">
-            <div class="row justify-content-center">
-              <div class="col-md-8 col-lg-6">
-                <!-- 發票主體 -->
-                <div class="card shadow-sm">
-                  <!-- 發票頂部 -->
-                  <div
-                    class="card-header text-center bg-secondary text-white py-3"
-                  >
-                    <div class="fw-bold fs-5">電子發票證明聯</div>
-                  </div>
-
-                  <div class="card-body px-4 py-3">
-                    <!-- 發票號碼 -->
-                    <div class="text-center mb-3">
-                      <div class="invoice-number fw-bold fs-3">AB-12345678</div>
-                      <div class="text-body-secondary small">
-                        2026-04-17 14:32:08
-                      </div>
-                    </div>
-
-                    <hr />
-
-                    <!-- 品項明細 -->
-                    <table class="table table-sm table-borderless small mb-0">
-                      <thead>
-                        <tr class="text-body-secondary">
-                          <th>品名</th>
-                          <th class="text-center">數量</th>
-                          <th class="text-end">單價</th>
-                          <th class="text-end">小計</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>古早味麥芽餅</td>
-                          <td class="text-center">2</td>
-                          <td class="text-end">35</td>
-                          <td class="text-end">70</td>
-                        </tr>
-                      </tbody>
-                    </table>
-
-                    <hr />
-
-                    <!-- 金額區 -->
-                    <div class="d-flex justify-content-between small mb-1">
-                      <span class="text-body-secondary">銷售額合計</span>
-                      <span>NT$ 120</span>
-                    </div>
-                    <div class="d-flex justify-content-between small mb-1">
-                      <span class="text-body-secondary">稅額(5%)</span>
-                      <span>NT$ 6</span>
-                    </div>
-                    <div class="d-flex justify-content-between fw-bold mt-2">
-                      <span>總計</span>
-                      <span class="text-primary fs-5">NT$ 126</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     ```
 
 ---
@@ -1833,7 +1746,7 @@
     ></AppModal>
     ```
 
-  - 於 `ShopOrderView.vue` 中，放入以下自訂內容至具名插槽 `header` 中：
+  - 於 `<AppModal></AppModal>` 中，放入以下自訂內容至具名插槽 `header` 中：
 
     ```html
     <template #header>
@@ -1841,15 +1754,65 @@
     </template>
     ```
 
-  - 於 `ShopOrderView.vue` 中，放入以下自訂內容至具名插槽 `footer` 中：
+  - 於 `<AppModal></AppModal>` 中，放入以下自訂內容至具名插槽 `footer` 中：
 
     ```html
     <template #footer>如發票有問題請聯繫客服!</template>
     ```
     
-  - 於 `ShopOrderView.vue` 中，放入以下自訂內容(不指定插槽名稱，則為預設)：
+  - 於 `<AppModal></AppModal>` 中，放入以下自訂內容(不指定插槽名稱，則為預設)：
 
-  - 於 `AppModal` 中，將原發票 HTML 改放置預設插槽中
+	```html
+	<!-- 發票頂部 -->
+	<div class="card-header text-center bg-secondary text-white py-3">
+		<div class="fw-bold fs-5">電子發票證明聯</div>
+	</div>
+
+	<div class="card-body px-4 py-3">
+		<!-- 發票號碼 -->
+		<div class="text-center mb-3">
+		  <div class="invoice-number fw-bold fs-3">AB-12345678</div>
+		  <div class="text-body-secondary small">
+			2026-04-17 14:32:08
+		  </div>
+		</div>
+		<hr />
+		<!-- 品項明細 -->
+		<table class="table table-sm table-borderless small mb-0">
+		  <thead>
+			<tr class="text-body-secondary">
+			  <th>品名</th>
+			  <th class="text-center">數量</th>
+			  <th class="text-end">單價</th>
+			  <th class="text-end">小計</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			<tr>
+			  <td>古早味麥芽餅</td>
+			  <td class="text-center">2</td>
+			  <td class="text-end">35</td>
+			  <td class="text-end">70</td>
+			</tr>
+		  </tbody>
+		</table>
+		<hr />
+		<!-- 金額區 -->
+		<div class="d-flex justify-content-between small mb-1">
+		  <span class="text-body-secondary">銷售額合計</span>
+		  <span>NT$ 120</span>
+		</div>
+		<div class="d-flex justify-content-between small mb-1">
+		  <span class="text-body-secondary">稅額(5%)</span>
+		  <span>NT$ 6</span>
+		</div>
+		<div class="d-flex justify-content-between fw-bold mt-2">
+		  <span>總計</span>
+		  <span class="text-primary fs-5">NT$ 126</span>
+		</div>
+	</div>
+	```
+
   - 將發票所需之資料補全，步驟同前述
   - 增加發票按鈕顯示條件，當 `invoice` 不為 `null` 時，顯示「發票」按鈕
 

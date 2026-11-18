@@ -1,0 +1,4560 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>帶你進入 Vue.js 3 - 課程實作練習</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+      }
+      #sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 280px;
+        overflow-y: auto;
+        padding: 1rem;
+        background: var(--bs-tertiary-bg);
+        border-right: 1px solid var(--bs-border-color);
+      }
+      #sidebar a {
+        display: block;
+        padding: 0.15rem 0;
+        color: var(--bs-body-color);
+        text-decoration: none;
+        font-size: 0.85rem;
+      }
+      #sidebar a:hover {
+        color: var(--bs-primary);
+      }
+      .toc-l2 {
+        font-weight: 600;
+        margin-top: 0.5rem;
+      }
+      .toc-l3 {
+        padding-left: 0.75rem !important;
+      }
+      main {
+        margin-left: 280px;
+        max-width: 980px;
+        padding: 2rem 2.5rem 4rem;
+      }
+      pre {
+        background: #f6f8fa;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        overflow-x: auto;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+        color: inherit;
+      }
+      blockquote {
+        border-left: 4px solid var(--bs-primary);
+        background: var(--bs-secondary-bg);
+        padding: 0.75rem 1rem;
+        border-radius: 0 0.5rem 0.5rem 0;
+      }
+      blockquote p:last-child {
+        margin-bottom: 0;
+      }
+      h1 {
+        font-weight: bold;
+      }
+      h2 {
+        margin-top: 3rem;
+        font-weight: bold;
+        padding-bottom: 0.4rem;
+      }
+      h3 {
+        margin-top: 2rem;
+        font-weight: bold;
+      }
+      h4 {
+        margin-top: 1.5rem;
+        font-weight: bold;
+      }
+      h5 {
+        font-weight: bold;
+      }
+      table {
+        width: 100%;
+        margin-bottom: 1rem;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid var(--bs-border-color);
+        padding: 0.4rem 0.75rem;
+      }
+      th {
+        background: var(--bs-tertiary-bg);
+      }
+      pre {
+        position: relative;
+      }
+      pre.collapsible.collapsed {
+        max-height: 7rem;
+        overflow: hidden;
+      }
+      pre.collapsible.collapsed::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 3rem;
+        background: linear-gradient(to bottom, rgba(246, 248, 250, 0), #f6f8fa);
+        pointer-events: none;
+      }
+      .pre-tools {
+        position: absolute;
+        top: 0.4rem;
+        right: 0.4rem;
+        display: flex;
+        gap: 0.35rem;
+        z-index: 2;
+      }
+      .pre-tools .btn {
+        font-size: 0.75rem;
+        padding: 0.15rem 0.5rem;
+        opacity: 0.8;
+        background: #fff;
+      }
+      .pre-tools .btn:hover {
+        opacity: 1;
+      }
+      #fab {
+        position: fixed;
+        right: 0.5rem;
+        top: 0.5rem;
+        z-index: 1030;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        font-size: 1.4rem;
+        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.3);
+        padding: 0;
+        line-height: 1;
+      }
+      .offcanvas-body a {
+        display: block;
+        padding: 0.3rem 0;
+        color: var(--bs-body-color);
+        text-decoration: none;
+      }
+      .offcanvas-body a:hover {
+        color: var(--bs-primary);
+      }
+      @media (max-width: 767.98px) {
+        main {
+          margin-left: 0;
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav id="sidebar" class="d-none d-md-block">
+      <div class="fw-bold mb-2">目錄</div>
+      <a class="toc-l1" href="#sec-1">帶你進入 Vue.js 3 - 課程實作練習</a>
+      <a class="toc-l2" href="#sec-2">🏪 柑仔店商城系統開發</a>
+      <a class="toc-l3" href="#sec-3">前情提要</a>
+      <a class="toc-l3" href="#sec-4">任務說明</a>
+      <a class="toc-l3" href="#sec-5">所需功能模組</a>
+      <a class="toc-l2" href="#sec-6">準備好你的☕🧠🔥，出發吧！工程師👊</a>
+      <a class="toc-l2" href="#sec-7">前置作業</a>
+      <a class="toc-l3" href="#sec-8">四個步驟取得 Vue 開發的入場卷</a>
+      <a class="toc-l2" href="#sec-14">正式拉開序幕</a>
+      <a class="toc-l3" href="#sec-15">00｜應用程式起點</a>
+      <a class="toc-l3" href="#sec-21">
+        01｜單一檔案元件（Single File Component）
+      </a>
+      <a class="toc-l3" href="#sec-30">02｜模組</a>
+      <a class="toc-l3" href="#sec-35">03｜路由（Router）</a>
+      <a class="toc-l3" href="#sec-40">04｜生命週期（Lifecycle）</a>
+      <a class="toc-l3" href="#sec-42">05｜響應式變數（ref / reactive）</a>
+      <a class="toc-l3" href="#sec-44">06｜資料綁定（v-bind / v-model）</a>
+      <a class="toc-l3" href="#sec-46">07｜事件綁定（v-on）</a>
+      <a class="toc-l3" href="#sec-49">08｜條件渲染（v-if / v-show）</a>
+      <a class="toc-l3" href="#sec-52">09｜迴圈渲染（v-for）</a>
+      <a class="toc-l3" href="#sec-57">10｜計算屬性（computed）</a>
+      <a class="toc-l3" href="#sec-59">11｜Pinia 狀態管理</a>
+      <a class="toc-l3" href="#sec-66">12｜監聽（watch / watchEffect）</a>
+      <a class="toc-l3" href="#sec-71">13｜元件（Component）</a>
+      <a class="toc-l3" href="#sec-82">14｜.env 環境變數</a>
+      <a class="toc-l3" href="#sec-85">15｜Axios 前後端串接</a>
+      <a class="toc-l2" href="#sec-100">最後關卡</a>
+      <a class="toc-l3" href="#sec-101">16｜整合登入驗證及登出</a>
+      <a class="toc-l1" href="#sec-110">
+        大功告成！恭喜各位&quot;今天&quot;可以下班了。
+      </a>
+    </nav>
+    <button
+      id="fab"
+      class="btn btn-dark d-md-none"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#tocCanvas"
+      aria-label="開啟目錄"
+    >
+      ☰
+    </button>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="tocCanvas">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title">目錄</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="offcanvas-body">
+        <a class="toc-l1" href="#sec-1">帶你進入 Vue.js 3 - 課程實作練習</a>
+        <a class="toc-l2" href="#sec-2">🏪 柑仔店商城系統開發</a>
+        <a class="toc-l3" href="#sec-3">前情提要</a>
+        <a class="toc-l3" href="#sec-4">任務說明</a>
+        <a class="toc-l3" href="#sec-5">所需功能模組</a>
+        <a class="toc-l2" href="#sec-6">準備好你的☕🧠🔥，出發吧！工程師👊</a>
+        <a class="toc-l2" href="#sec-7">前置作業</a>
+        <a class="toc-l3" href="#sec-8">四個步驟取得 Vue 開發的入場卷</a>
+        <a class="toc-l2" href="#sec-14">正式拉開序幕</a>
+        <a class="toc-l3" href="#sec-15">00｜應用程式起點</a>
+        <a class="toc-l3" href="#sec-21">
+          01｜單一檔案元件（Single File Component）
+        </a>
+        <a class="toc-l3" href="#sec-30">02｜模組</a>
+        <a class="toc-l3" href="#sec-35">03｜路由（Router）</a>
+        <a class="toc-l3" href="#sec-40">04｜生命週期（Lifecycle）</a>
+        <a class="toc-l3" href="#sec-42">05｜響應式變數（ref / reactive）</a>
+        <a class="toc-l3" href="#sec-44">06｜資料綁定（v-bind / v-model）</a>
+        <a class="toc-l3" href="#sec-46">07｜事件綁定（v-on）</a>
+        <a class="toc-l3" href="#sec-49">08｜條件渲染（v-if / v-show）</a>
+        <a class="toc-l3" href="#sec-52">09｜迴圈渲染（v-for）</a>
+        <a class="toc-l3" href="#sec-57">10｜計算屬性（computed）</a>
+        <a class="toc-l3" href="#sec-59">11｜Pinia 狀態管理</a>
+        <a class="toc-l3" href="#sec-66">12｜監聽（watch / watchEffect）</a>
+        <a class="toc-l3" href="#sec-71">13｜元件（Component）</a>
+        <a class="toc-l3" href="#sec-82">14｜.env 環境變數</a>
+        <a class="toc-l3" href="#sec-85">15｜Axios 前後端串接</a>
+        <a class="toc-l2" href="#sec-100">最後關卡</a>
+        <a class="toc-l3" href="#sec-101">16｜整合登入驗證及登出</a>
+        <a class="toc-l1" href="#sec-110">
+          大功告成！恭喜各位&quot;今天&quot;可以下班了。
+        </a>
+      </div>
+    </div>
+    <main>
+      <h1 id="sec-1">帶你進入 Vue.js 3 - 課程實作練習</h1>
+      <h2 id="sec-2">🏪 柑仔店商城系統開發</h2>
+      <h3 id="sec-3">前情提要</h3>
+      <blockquote>
+        柑仔店商城的工程師昨天離職了。留下一座屎山，有一個不知道是用什麼語言寫的系統、滿是技術債的
+        repo、還有你。 老闆只說了一句話：「下週要上線。」😱而你只剩 5 天的時間！
+        來吧，完成這些任務。每完成一個，你離活著下班就更近一步啦～
+      </blockquote>
+      <h3 id="sec-4">任務說明</h3>
+      <blockquote>
+        你將從零開始，循序漸進地學習 Vue.js 3 核心技術 －
+        包含單一檔案元件、路由、模組、生命週期、響應式變數、資料綁定、事件綁定、條件渲染、迴圈渲染、計算屬性、Pinia
+        狀態管理、監聽、元件、環境變數、Axios
+        前後端串接，以及登入驗證，並將所學整合運用，一步一步完成一個「柑仔店商城」的前端系統。
+      </blockquote>
+      <h3 id="sec-5">所需功能模組</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>功能模組</th>
+            <th>說明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🏠 首頁/關於我們</td>
+            <td>基本頁面建立與路由配置</td>
+          </tr>
+          <tr>
+            <td>🛍️ 線上購物</td>
+            <td>商品列表、分類篩選、搜尋</td>
+          </tr>
+          <tr>
+            <td>📦 商品資訊</td>
+            <td>動態路由，顯示單一商品詳細內容</td>
+          </tr>
+          <tr>
+            <td>🛒 購物車</td>
+            <td>以 Pinia 管理購物車狀態，加入商品、調整數量、計算總價</td>
+          </tr>
+          <tr>
+            <td>💳 結帳</td>
+            <td>填寫收件資料、送出訂單</td>
+          </tr>
+          <tr>
+            <td>📋 訂單記錄/發票</td>
+            <td>查詢歷史訂單列表及發票</td>
+          </tr>
+          <tr>
+            <td>⚙️ 後台商品管理</td>
+            <td>串接 API 進行商品 CRUD（新增、編輯、刪除）</td>
+          </tr>
+          <tr>
+            <td>👤 會員註冊/登入</td>
+            <td>表單驗證、JWT Token 管理、路由守衛</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2 id="sec-6">準備好你的☕🧠🔥，出發吧！工程師👊</h2>
+      <h2 id="sec-7">前置作業</h2>
+      <h3 id="sec-8">四個步驟取得 Vue 開發的入場卷</h3>
+      <h4 id="sec-9">1.安裝 node.js</h4>
+      <ul>
+        <li>
+          前往
+          <a href="https://nodejs.org">https://nodejs.org</a>
+          下載並安裝
+          <strong>LTS 版本</strong>
+        </li>
+        <li>
+          安裝完成後，在終端機執行以下指令確認版本：
+          <pre><code class="language-bash">node -v
+npm -v
+</code></pre>
+        </li>
+      </ul>
+      <h4 id="sec-10">2.建立 Vue 專案</h4>
+      <ul>
+        <li>
+          在終端機執行以下指令，以 Vite 建立 Vue 專案：
+          <pre><code class="language-bash">npm create vue@latest
+</code></pre>
+        </li>
+      </ul>
+      <h4 id="sec-11">3.安裝 node_module</h4>
+      <ul>
+        <li>
+          進入專案資料夾後，執行以下指令安裝所有相依套件：
+          <pre><code class="language-bash">cd 專案名稱
+npm install
+</code></pre>
+        </li>
+        <li>
+          安裝完成後會產生
+          <code>node_modules/</code>
+          資料夾
+        </li>
+      </ul>
+      <h4 id="sec-12">4.啟動 Vue 專案</h4>
+      <ul>
+        <li>
+          執行以下指令啟動開發伺服器：
+          <pre><code class="language-bash">npm run dev
+</code></pre>
+        </li>
+        <li>
+          開啟瀏覽器並前往終端機顯示的網址（預設為
+          <code>http://localhost:5173</code>
+          ）
+        </li>
+      </ul>
+      <h4 id="sec-13">建置 Vue 專案</h4>
+      <ul>
+        <li>
+          執行以下指令打包 Vue 專案：
+          <pre><code class="language-bash">npm run build
+</code></pre>
+        </li>
+      </ul>
+      <h2 id="sec-14">正式拉開序幕</h2>
+      <h3 id="sec-15">00｜應用程式起點</h3>
+      <h4 id="sec-16">📝Vue 應用程式的載入流程：</h4>
+      <ul>
+        <li>
+          ⚠️
+          <code>index.html</code>
+          是瀏覽器真正讀取的起點；
+          <code>main.js</code>
+          負責啟動 Vue；
+          <code>App.vue</code>
+          則是所有頁面的「外框」。
+
+          <pre><code>瀏覽器載入 index.html
+  └─ 引入第三方程式庫
+  └─ 載入 main.js
+      └─ createApp(App)       ← 以 App.vue 作為根元件建立應用程式
+            └─ .mount(&#39;#app&#39;)  ← 將整個 Vue 應用掛載到 index.html 的 &lt;div id=&quot;app&quot;&gt;
+                  └─ App.vue 渲染頁面內容（頁首、RouterView、頁尾）
+</code></pre>
+        </li>
+      </ul>
+      <h4 id="sec-17">📝index.html</h4>
+      <ul>
+        <li>
+          說明：
+          <blockquote>
+            <code>index.html</code>
+            是整個網站唯一的 HTML 入口，瀏覽器第一個讀取的就是它。 它的
+            <code>&lt;head&gt;</code>
+            負責載入外部資源（如 Bootstrap CSS/JS），
+            <code>&lt;body&gt;</code>
+            裡只有一個
+            <code>&lt;div id=&quot;app&quot;&gt;</code>
+            作為 Vue 掛載點，以及一個
+            <code>&lt;script&gt;</code>
+            引入
+            <code>main.js</code>
+            。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              在 index.html 的
+              <code>&lt;head&gt;</code>
+              區段，透過 CDN 掛載 Bootstrap 5 CSS 及 JS
+              <pre><code class="language-none">&lt;link
+  href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css&quot;
+  rel=&quot;stylesheet&quot;
+/&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-18">📝src/main.js</h4>
+      <ul>
+        <li>
+          說明：
+          <blockquote>
+            <code>main.js</code>
+            是 Vue 應用的啟動程式。 它呼叫
+            <code>createApp(App)</code>
+            以
+            <code>App.vue</code>
+            作為根元件建立應用實例， 再透過
+            <code>.use()</code>
+            掛載外掛/模組（如 Router、Pinia），最後
+            <code>.mount(&#39;#app&#39;)</code>
+            將整個應用注入
+            <code>index.html</code>
+            的掛載點。
+          </blockquote>
+        </li>
+      </ul>
+      <h4 id="sec-19">📝src/App.vue</h4>
+      <ul>
+        <li>
+          說明：
+          <blockquote>
+            <code>App.vue</code>
+            是所有頁面的「外框」，也是 Vue 應用最頂層的元件。
+            無論路由切換到哪個頁面，
+            <code>App.vue</code>
+            的 Header 與 Footer 始終存在， 只有
+            <code>&lt;RouterView /&gt;</code>
+            的部分會根據路由動態替換為對應的子頁面。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              在
+              <code>App.vue</code>
+              的
+              <code>&lt;template&gt;</code>
+              中設計主版面及其頁面內容
+              <pre><code class="language-copy">&lt;div class=&quot;container&quot;&gt;
+  &lt;header class=&quot;border-bottom lh-1 py-3&quot;&gt;
+    &lt;div class=&quot;row flex-nowrap justify-content-between align-items-center&quot;&gt;
+      &lt;div class=&quot;col-3 pt-1&quot;&gt;&lt;img src=&quot;/favicon.ico&quot; alt=&quot;Logo&quot; /&gt;&lt;/div&gt;
+      &lt;div class=&quot;col-6 text-center&quot;&gt;
+        &lt;h1 class=&quot;fw-bold&quot;&gt;OO柑仔店&lt;/h1&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;col-3 d-flex justify-content-end align-items-center&quot;&gt;
+        &lt;a class=&quot;me-2&quot; href=&quot;#&quot;&gt;XXX&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+  &lt;div class=&quot;nav-scroller py-1 mb-3 border-bottom&quot;&gt;
+    &lt;nav class=&quot;nav nav-underline&quot;&gt;
+      &lt;a class=&quot;nav-item nav-link link-body-emphasis&quot; href=&quot;#&quot;&gt;XXX&lt;/a&gt;
+    &lt;/nav&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;py-3&quot;&gt;
+    &lt;!--頁面內容預留區--&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;container&quot;&gt;
+  &lt;footer class=&quot;py-3 my-4&quot;&gt;
+    &lt;p class=&quot;text-center text-body-secondary&quot;&gt;
+      © 2026 Vue.js OO柑仔店商城
+    &lt;/p&gt;
+  &lt;/footer&gt;
+&lt;/div&gt;
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-20">📝建立資料夾</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            開發過程會有不同程式，為方便歸納，將建立資料夾放置
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              建立
+              <code>src\assets</code>
+              資料夾，可放置圖片、樣式、字型等靜態資源
+            </li>
+            <li>
+              建立
+              <code>src\components</code>
+              資料夾，可放置
+            </li>
+            <li>
+              建立
+              <code>src\routers</code>
+              資料夾，可放置控制頁面導覽及設定檔案
+            </li>
+            <li>
+              建立
+              <code>src\utils</code>
+              資料夾，可放置自訂模組重複使用的子元件
+            </li>
+            <li>
+              建立
+              <code>src\services</code>
+              資料夾，可放置服務模組，如 axios
+            </li>
+            <li>
+              建立
+              <code>src\stores</code>
+              資料夾，可放置狀態管理
+            </li>
+            <li>
+              建立
+              <code>src\views</code>
+              資料夾，可放置頁面級元件
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr />
+      <h3 id="sec-21">01｜單一檔案元件（Single File Component）</h3>
+      <h4 id="sec-22">📝建立.vue檔 - 空範本</h4>
+      <ul>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              於
+              <code>src\views</code>
+              建立一個
+              <code>BlankView.vue</code>
+              檔案，包含
+              <code>&lt;script setup&gt;</code>
+              、
+              <code>&lt;template&gt;</code>
+              、
+              <code>&lt;style scoped&gt;</code>
+            </li>
+          </ul>
+          <pre><code class="language-none">&lt;script setup&gt;&lt;/script&gt;
+&lt;template&gt;&lt;/template&gt;
+&lt;style scoped&gt;&lt;/style&gt;
+</code></pre>
+        </li>
+      </ul>
+      <h4 id="sec-23">📝建立.vue檔 - 介紹頁面</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            柑仔店需要「首頁」與「關於我們」兩個頁面，每個頁面都是一個獨立的
+            .vue 檔案，包含自己的版面與樣式。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              建立一個「首頁」頁面
+              <code>HomeView.vue</code>
+              及設計其
+              <code>&lt;template&gt;</code>
+              內容
+
+              <pre><code class="language-copy">&lt;h3 class=&quot;fw-bold mb-3&quot;&gt;首頁&lt;/h3&gt;
+&lt;p&gt;傳統柑仔店，提供在地優質商品，是您購物的最佳選擇。&lt;/p&gt;
+</code></pre>
+            </li>
+            <li>
+              建立一個「關於我」頁面
+              <code>AboutView.vue</code>
+              及設計其
+              <code>&lt;template&gt;</code>
+              內容
+
+              <pre><code class="language-copy">&lt;h3 class=&quot;fw-bold mb-3&quot;&gt;關於我&lt;/h3&gt;
+&lt;div class=&quot;p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary&quot;&gt;
+  &lt;h1 class=&quot;display-4 fst-italic&quot;&gt;柑仔店－古早味的溫度&lt;/h1&gt;
+  &lt;p class=&quot;lead my-3&quot;&gt;
+    從小巷弄裡飄出的熟悉香氣，承載著幾代人的記憶。
+    我們精選在地好物，讓您每次購物都像回到童年的柑仔店。
+  &lt;/p&gt;
+  &lt;p class=&quot;lead mb-0&quot;&gt;
+    &lt;a href=&quot;#&quot; class=&quot;text-body-emphasis fw-bold&quot;&gt;逛逛我們的商品 →&lt;/a&gt;
+  &lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-24">📝建立.vue檔 - 購物商城頁面</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客需要在柑仔店可以進行購物，所以需增加「線上購物」、「商品資訊」、「購物車」、「結帳」以及「訂單記錄」等功能。
+          </blockquote>
+          <table>
+            <thead>
+              <tr>
+                <th>功能名稱</th>
+                <th>檔案名稱</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>線上購物</td>
+                <td>ShopView.vue</td>
+              </tr>
+              <tr>
+                <td>商品資訊</td>
+                <td>ShopProductView.vue</td>
+              </tr>
+              <tr>
+                <td>購物車</td>
+                <td>ShopCartView.vue</td>
+              </tr>
+              <tr>
+                <td>結帳</td>
+                <td>ShopCheckoutView.vue</td>
+              </tr>
+              <tr>
+                <td>訂單記錄</td>
+                <td>ShopOrderView.vue</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <h5 id="sec-25"><em>線上購物</em></h5>
+          <ul>
+            <li>
+              建立一個「線上購物」頁面
+              <code>ShopView.vue</code>
+              及設計其
+              <code>&lt;template&gt;</code>
+              內容
+
+              <pre><code class="language-copy">&lt;h3 class=&quot;fw-bold mb-3&quot;&gt;線上購物&lt;/h3&gt;
+
+&lt;!-- 搜尋 &amp; 篩選列 1 --&gt;
+&lt;div class=&quot;d-flex gap-2 mb-4&quot;&gt;
+  &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;搜尋商品...&quot; /&gt;
+  &lt;select class=&quot;form-select&quot; style=&quot;max-width: 160px&quot;&gt;
+    &lt;option value=&quot;&quot;&gt;全部分類&lt;/option&gt;
+    &lt;option value=&quot;1&quot;&gt;零食&lt;/option&gt;
+    &lt;option value=&quot;2&quot;&gt;飲料&lt;/option&gt;
+    &lt;option value=&quot;3&quot;&gt;糕點&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;
+&lt;!-- 搜尋 &amp; 篩選列 2 --&gt;
+&lt;div class=&quot;d-flex gap-2 mb-4&quot;&gt;
+  &lt;input type=&quot;text&quot; class=&quot;form-control&quot; placeholder=&quot;搜尋商品...&quot; /&gt;
+  &lt;select class=&quot;form-select&quot; style=&quot;max-width: 160px&quot;&gt;
+    &lt;option value=&quot;&quot;&gt;全部分類&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;
+
+&lt;!-- 商品列表 --&gt;
+&lt;div class=&quot;row g-3&quot;&gt;
+  &lt;div&gt;共 N 筆結果&lt;/div&gt;
+  &lt;!-- 商品卡片 --&gt;
+  &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;div class=&quot;card h-100&quot;&gt;
+      &lt;div class=&quot;card-body d-flex flex-column&quot;&gt;
+        &lt;h6 class=&quot;card-title fw-bold&quot;&gt;
+          &lt;a href=&quot;#&quot; class=&quot;text-decoration-none stretched-link&quot;&gt;
+            古早味麥芽餅
+          &lt;/a&gt;
+        &lt;/h6&gt;
+        &lt;p class=&quot;card-text text-body-secondary small flex-grow-1&quot;&gt;
+          用傳統配方製作，香脆餅皮包覆濃郁麥芽糖，勾起童年的甜蜜記憶。
+        &lt;/p&gt;
+        &lt;div class=&quot;d-flex justify-content-between align-items-center mt-2&quot;&gt;
+          &lt;span class=&quot;fw-bold text-primary&quot;&gt;NT$ 35&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+            </li>
+          </ul>
+          <h5 id="sec-26"><em>商品資訊</em></h5>
+          <ul>
+            <li>
+              建立一個「商品資訊」頁面
+              <code>ShopProductView.vue</code>
+              及設計其
+              <code>&lt;template&gt;</code>
+              內容
+
+              <pre><code class="language-copy">&lt;h3 class=&quot;fw-bold mb-3&quot;&gt;商品資訊&lt;/h3&gt;
+
+&lt;div class=&quot;row g-4&quot;&gt;
+  &lt;!-- 商品圖片 --&gt;
+  &lt;div class=&quot;col-md-5&quot;&gt;
+    &lt;div
+      class=&quot;bg-light rounded d-flex align-items-center justify-content-center&quot;
+      style=&quot;height: 300px&quot;
+    &gt;
+      &lt;div&gt;
+        &lt;div style=&quot;font-size: 100px&quot;&gt;🧋&lt;/div&gt;
+        &lt;div class=&quot;text-center&quot;&gt;商品圖片&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- 商品資訊 --&gt;
+  &lt;div class=&quot;col-md-7&quot;&gt;
+    &lt;div class=&quot;mb-2&quot;&gt;
+      &lt;span class=&quot;badge text-bg-primary me-1&quot;&gt;人氣&lt;/span&gt;
+      &lt;span class=&quot;badge text-bg-secondary me-1&quot;&gt;古早味&lt;/span&gt;
+      &lt;span class=&quot;badge text-bg-light text-dark border me-1&quot;&gt;零食&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;h4 class=&quot;fw-bold mb-1&quot;&gt;古早味麥芽餅&lt;/h4&gt;
+    &lt;div class=&quot;fs-4 fw-bold text-primary mb-2&quot;&gt;NT$ 35&lt;/div&gt;
+    &lt;p class=&quot;text-body-secondary mb-4&quot;&gt;
+      用傳統配方製作，香脆餅皮包覆濃郁麥芽糖，勾起童年的甜蜜記憶。
+    &lt;/p&gt;
+
+    &lt;!-- 數量選擇 --&gt;
+    &lt;div class=&quot;d-flex align-items-center gap-3 mb-4&quot;&gt;
+      &lt;label class=&quot;form-label mb-0 fw-semibold&quot;&gt;數量&lt;/label&gt;
+      &lt;select class=&quot;form-select&quot; style=&quot;width: 100px&quot;&gt;
+        &lt;option value=&quot;1&quot;&gt;1&lt;/option&gt;
+        &lt;option value=&quot;2&quot;&gt;2&lt;/option&gt;
+        &lt;option value=&quot;3&quot;&gt;3&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/div&gt;
+
+    &lt;button type=&quot;button&quot; class=&quot;btn btn-primary px-5&quot;&gt;加入購物車&lt;/button&gt;
+    &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary px-5&quot; disabled&gt;
+      已售完
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+            </li>
+          </ul>
+          <h5 id="sec-27"><em>購物車</em></h5>
+          <ul>
+            <li>
+              建立一個「購物車」頁面
+              <code>ShopCartView.vue</code>
+              及設計其
+              <code>&lt;template&gt;</code>
+              內容
+
+              <pre><code class="language-copy">&lt;h3 class=&quot;fw-bold mb-4&quot;&gt;購物車&lt;/h3&gt;
+
+&lt;!-- 購物車空狀態 --&gt;
+&lt;div class=&quot;text-center py-5 text-body-secondary&quot;&gt;
+  &lt;div class=&quot;fs-1 mb-2&quot;&gt;🛒&lt;/div&gt;
+  &lt;p class=&quot;mb-3&quot;&gt;購物車是空的，快去選購吧！&lt;/p&gt;
+  &lt;button class=&quot;btn btn-primary&quot;&gt;前往商品列表&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;row g-4&quot;&gt;
+  &lt;!-- 購物車品項 --&gt;
+  &lt;div class=&quot;col-md-8&quot;&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;div class=&quot;card-body p-0&quot;&gt;
+        &lt;table class=&quot;table mb-0 align-middle&quot;&gt;
+          &lt;thead class=&quot;table-light&quot;&gt;
+            &lt;tr&gt;
+              &lt;th&gt;商品&lt;/th&gt;
+              &lt;th class=&quot;text-center&quot;&gt;單價&lt;/th&gt;
+              &lt;th class=&quot;text-center&quot; style=&quot;width: 140px&quot;&gt;數量&lt;/th&gt;
+              &lt;th class=&quot;text-end&quot;&gt;小計&lt;/th&gt;
+              &lt;th&gt;&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td&gt;
+                &lt;div class=&quot;fw-semibold&quot;&gt;古早味麥芽餅&lt;/div&gt;
+              &lt;/td&gt;
+              &lt;td class=&quot;text-center&quot;&gt;NT$ 35&lt;/td&gt;
+              &lt;td&gt;
+                &lt;div class=&quot;input-group input-group-sm&quot;&gt;
+                  &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;
+                    －
+                  &lt;/button&gt;
+                  &lt;span class=&quot;input-group-text px-3&quot;&gt;00&lt;/span&gt;
+                  &lt;button class=&quot;btn btn-secondary&quot; type=&quot;button&quot;&gt;
+                    ＋
+                  &lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/td&gt;
+              &lt;td class=&quot;text-end fw-semibold&quot;&gt;NT$ 70&lt;/td&gt;
+              &lt;td class=&quot;text-end&quot;&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                  class=&quot;btn btn-sm btn-link text-danger p-0&quot;
+                &gt;
+                  移除
+                &lt;/button&gt;
+              &lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- 訂單摘要 --&gt;
+  &lt;div class=&quot;col-md-4&quot;&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;div class=&quot;card-body&quot;&gt;
+        &lt;h6 class=&quot;fw-bold mb-3&quot;&gt;訂單摘要&lt;/h6&gt;
+        &lt;div class=&quot;d-flex justify-content-between fw-bold fs-5 mb-3&quot;&gt;
+          &lt;span&gt;合計&lt;/span&gt;
+          &lt;span class=&quot;text-primary&quot;&gt;NT$ 171&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-primary w-100&quot;&gt;
+          前往結帳
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+            </li>
+          </ul>
+          <h5 id="sec-28"><em>結帳</em></h5>
+          <ul>
+            <li>
+              建立一個「結帳」頁面
+              <code>ShopCheckoutView.vue</code>
+              及設計其
+              <code>&lt;template&gt;</code>
+              內容
+
+              <pre><code class="language-copy">&lt;h3 class=&quot;fw-bold mb-4&quot;&gt;確認結帳&lt;/h3&gt;
+
+&lt;!-- 訂單明細 --&gt;
+&lt;div class=&quot;row g-4 mb-3&quot;&gt;
+  &lt;div class=&quot;col-md-12&quot;&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;div class=&quot;card-body&quot;&gt;
+        &lt;h6 class=&quot;fw-bold mb-3&quot;&gt;訂單明細&lt;/h6&gt;
+        &lt;table class=&quot;table align-middle&quot;&gt;
+          &lt;thead class=&quot;table-light&quot;&gt;
+            &lt;tr&gt;
+              &lt;th&gt;#&lt;/th&gt;
+              &lt;th&gt;商品名稱&lt;/th&gt;
+              &lt;th&gt;數量&lt;/th&gt;
+              &lt;th class=&quot;text-end&quot;&gt;售價&lt;/th&gt;
+              &lt;th class=&quot;text-end&quot;&gt;小計&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td class=&quot;text-body-secondary small&quot;&gt;1&lt;/td&gt;
+              &lt;td class=&quot;fw-semibold&quot;&gt;古早味麥芽餅&lt;/td&gt;
+              &lt;td&gt;
+                &lt;div class=&quot;d-flex align-items-center gap-2&quot;&gt;
+                  &lt;button
+                    class=&quot;btn btn-outline-secondary btn-sm px-2 py-0&quot;
+                  &gt;
+                    －
+                  &lt;/button&gt;
+                  &lt;span style=&quot;min-width: 1.5rem&quot; class=&quot;text-center&quot;&gt;
+                    1
+                  &lt;/span&gt;
+                  &lt;button
+                    class=&quot;btn btn-outline-secondary btn-sm px-2 py-0&quot;
+                  &gt;
+                    ＋
+                  &lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/td&gt;
+              &lt;td class=&quot;text-end&quot;&gt;NT$ 35&lt;/td&gt;
+              &lt;td class=&quot;text-end&quot;&gt;NT$ 70&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td class=&quot;text-body-secondary small&quot;&gt;2&lt;/td&gt;
+              &lt;td class=&quot;fw-semibold&quot;&gt;手工鳳梨酥&lt;/td&gt;
+              &lt;td&gt;
+                &lt;div class=&quot;d-flex align-items-center gap-2&quot;&gt;
+                  &lt;button
+                    class=&quot;btn btn-outline-secondary btn-sm px-2 py-0&quot;
+                  &gt;
+                    －
+                  &lt;/button&gt;
+                  &lt;span style=&quot;min-width: 1.5rem&quot; class=&quot;text-center&quot;&gt;
+                    4
+                  &lt;/span&gt;
+                  &lt;button
+                    class=&quot;btn btn-outline-secondary btn-sm px-2 py-0&quot;
+                  &gt;
+                    ＋
+                  &lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/td&gt;
+              &lt;td class=&quot;text-end&quot;&gt;$ 25&lt;/td&gt;
+              &lt;td class=&quot;text-end&quot;&gt;$ 100&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;div class=&quot;d-flex justify-content-between mb-2&quot;&gt;
+          &lt;span class=&quot;text-body-secondary&quot;&gt;小計&lt;/span&gt;
+          &lt;span&gt;$ 140&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;d-flex justify-content-between mb-2&quot;&gt;
+          &lt;span class=&quot;text-body-secondary&quot;&gt;全館滿2000元，享9折優惠&lt;/span&gt;
+          &lt;span class=&quot;text-danger&quot;&gt;差 $ XX 元即可享 9 折優惠&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;d-flex justify-content-between mb-2&quot;&gt;
+          &lt;span class=&quot;text-body-secondary&quot;&gt;運費&lt;/span&gt;
+          &lt;span class=&quot;text-success&quot;&gt;
+            🚚 運費 NT$ 60，差 $ XX 元即可免運
+          &lt;/span&gt;
+        &lt;/div&gt;
+        &lt;hr /&gt;
+        &lt;div class=&quot;d-flex justify-content-between fw-bold fs-5&quot;&gt;
+          &lt;span&gt;應付金額&lt;/span&gt;
+          &lt;span class=&quot;text-primary&quot;&gt;$ 126&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- 收件資訊 --&gt;
+&lt;div class=&quot;col-md-12&quot;&gt;
+  &lt;div class=&quot;card mb-3&quot;&gt;
+    &lt;div class=&quot;card-body&quot;&gt;
+      &lt;h6 class=&quot;fw-bold mb-3&quot;&gt;收件資訊&lt;/h6&gt;
+      &lt;div class=&quot;row g-2 mb-3&quot;&gt;
+        &lt;div class=&quot;col-md-6&quot;&gt;
+          &lt;label class=&quot;form-label&quot;&gt;姓名&lt;/label&gt;
+          &lt;input type=&quot;text&quot; class=&quot;form-control&quot; /&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;col-md-6&quot;&gt;
+          &lt;label class=&quot;form-label&quot;&gt;電話&lt;/label&gt;
+          &lt;input type=&quot;tel&quot; class=&quot;form-control&quot; /&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;row g-2 mb-3&quot;&gt;
+        &lt;div class=&quot;col-12&quot;&gt;
+          &lt;label class=&quot;form-label&quot;&gt;收件地址&lt;/label&gt;
+          &lt;input type=&quot;text&quot; class=&quot;form-control&quot; /&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;col-md-12&quot;&gt;
+  &lt;button type=&quot;button&quot; class=&quot;btn btn-primary w-100&quot;&gt;確認送出訂單&lt;/button&gt;
+&lt;/div&gt;
+</code></pre>
+            </li>
+          </ul>
+          <h5 id="sec-29"><em>訂單記錄</em></h5>
+          <ul>
+            <li>
+              建立一個「訂單記錄」頁面
+              <code>ShopOrderView.vue</code>
+              及設計其
+              <code>&lt;template&gt;</code>
+              內容
+
+              <pre><code class="language-copy">&lt;h3 class=&quot;fw-bold mb-4&quot;&gt;訂單記錄&lt;/h3&gt;
+&lt;!-- 訂單卡片（子元件位置） --&gt;
+&lt;div class=&quot;card mb-3&quot;&gt;
+  &lt;div class=&quot;card-body&quot;&gt;
+    &lt;div class=&quot;d-flex justify-content-between align-items-center mb-3&quot;&gt;
+      &lt;div&gt;
+        &lt;span class=&quot;badge  me-2&quot;&gt;已完成&lt;/span&gt;
+        &lt;small class=&quot;text-body-secondary&quot;&gt;
+          訂單編號：ORD-20260401-001
+        &lt;/small&gt;
+      &lt;/div&gt;
+      &lt;small class=&quot;text-body-secondary&quot;&gt;2026-04-01&lt;/small&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;mb-2 small&quot;&gt;
+      &lt;div class=&quot;d-flex justify-content-between&quot;&gt;
+        &lt;span&gt;古早味麥芽餅 x2&lt;/span&gt;
+        &lt;span&gt;NT$ 70&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;d-flex justify-content-between&quot;&gt;
+        &lt;span&gt;手工鳳梨酥 x3&lt;/span&gt;
+        &lt;span&gt;NT$ 75&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;hr class=&quot;my-2&quot; /&gt;
+    &lt;div class=&quot;d-flex justify-content-between align-items-center&quot;&gt;
+      &lt;span class=&quot;fw-bold&quot;&gt;合計 NT$ 145&lt;/span&gt;
+      &lt;div&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-outline-primary me-1&quot;&gt;
+          發票
+        &lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-outline-primary&quot;&gt;
+          查看詳情
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- 詳細訂單 Modal --&gt;
+&lt;div v-if=&quot;showDetailModal&quot; class=&quot;modal-backdrop fade show&quot;&gt;&lt;/div&gt;
+
+&lt;div
+  v-if=&quot;showDetailModal&quot;
+  class=&quot;modal fade show d-block&quot;
+  id=&quot;staticBackdrop&quot;
+  data-bs-backdrop=&quot;static&quot;
+  data-bs-keyboard=&quot;false&quot;
+  tabindex=&quot;-1&quot;
+  aria-labelledby=&quot;staticBackdropLabel&quot;
+  aria-hidden=&quot;true&quot;
+&gt;
+  &lt;div class=&quot;modal-dialog&quot;&gt;
+    &lt;div class=&quot;modal-content&quot;&gt;
+      &lt;div class=&quot;d-flex justify-content-end&quot;&gt;
+        &lt;button
+          type=&quot;button&quot;
+          class=&quot;btn-close m-3&quot;
+          data-bs-dismiss=&quot;modal&quot;
+          aria-label=&quot;Close&quot;
+          @click=&quot;showDetailModal = false&quot;
+        &gt;&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;modal-body mb-4&quot;&gt;
+        &lt;h5 class=&quot;fw-bold mb-1&quot;&gt;訂單編號&lt;/h5&gt;
+        &lt;p class=&quot;text-body-secondary small mb-3&quot;&gt;ORD-20260401-001&lt;/p&gt;
+
+        &lt;div class=&quot;d-flex gap-3 mb-3 small&quot;&gt;
+          &lt;div&gt;
+            &lt;span class=&quot;text-body-secondary&quot;&gt;訂單狀態：&lt;/span&gt;
+            &lt;span class=&quot;badge text-bg-success&quot;&gt;已完成&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;span class=&quot;text-body-secondary&quot;&gt;建立時間：&lt;/span&gt;
+            &lt;span&gt;2026-04-01 10:23:45&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;hr class=&quot;my-3&quot; /&gt;
+
+        &lt;!-- 收件資訊 --&gt;
+        &lt;p class=&quot;fw-bold small mb-2&quot;&gt;收件資訊&lt;/p&gt;
+        &lt;div class=&quot;small mb-1&quot;&gt;
+          &lt;span class=&quot;text-body-secondary me-2&quot;&gt;收件人：&lt;/span&gt;
+          &lt;span&gt;王小明&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;small mb-1&quot;&gt;
+          &lt;span class=&quot;text-body-secondary me-2&quot;&gt;電話：&lt;/span&gt;
+          &lt;span&gt;0912-345-678&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;small mb-3&quot;&gt;
+          &lt;span class=&quot;text-body-secondary me-2&quot;&gt;地址：&lt;/span&gt;
+          &lt;span&gt;台北市大安區信義路四段 100 號 5 樓&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;hr class=&quot;my-3&quot; /&gt;
+
+        &lt;!-- 品項明細 --&gt;
+        &lt;p class=&quot;fw-bold small mb-2&quot;&gt;購買品項&lt;/p&gt;
+        &lt;table class=&quot;table table-sm table-borderless small mb-0&quot;&gt;
+          &lt;thead class=&quot;text-body-secondary&quot;&gt;
+            &lt;tr&gt;
+              &lt;th&gt;品名&lt;/th&gt;
+              &lt;th class=&quot;text-center&quot;&gt;數量&lt;/th&gt;
+              &lt;th class=&quot;text-end&quot;&gt;單價&lt;/th&gt;
+              &lt;th class=&quot;text-end&quot;&gt;小計&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td&gt;古早味麥芽餅&lt;/td&gt;
+              &lt;td class=&quot;text-center&quot;&gt;2&lt;/td&gt;
+              &lt;td class=&quot;text-end&quot;&gt;NT$ 35&lt;/td&gt;
+              &lt;td class=&quot;text-end&quot;&gt;NT$ 70&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;hr class=&quot;my-3&quot; /&gt;
+
+        &lt;div class=&quot;d-flex justify-content-between fw-bold&quot;&gt;
+          &lt;span&gt;合計&lt;/span&gt;
+          &lt;span class=&quot;text-primary fs-5&quot;&gt;NT$ 215&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr />
+      <h3 id="sec-30">02｜模組</h3>
+      <h4 id="sec-31">📝安裝第三方模組</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            柑仔店為歡迎顧客！當使用者進入網站時，要在
+            <code>App.vue</code>
+            撒下彩帶表示慶祝。 使用
+            <code>canvas-confetti</code>
+            套件，在頁面載入自動觸發特效。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              終端機安裝套件：
+              <pre><code class="language-bash">npm install canvas-confetti
+</code></pre>
+            </li>
+            <li>
+              在
+              <code>App.vue</code>
+              的
+              <code>&lt;script setup&gt;</code>
+              中引入並使用：
+
+              <pre><code class="language-none">import confetti from &quot;canvas-confetti&quot;
+confetti()
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-32">📝建立並匯出自訂模組</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            柑仔店系統有很多表單欄位需要檢查帳號與密碼是否符合格式規則。
+            將驗證邏輯抽成
+            <code>validator.js</code>
+            模組，示範兩種匯出方式：
+            <strong>具名匯出（Named Export）</strong>
+            ：可同時匯出多個函式，
+            <code>import</code>
+            時用
+            <code>{ }</code>
+            解構
+            <strong>預設匯出（Default Export）</strong>
+            ：一個模組只有一個預設值，
+            <code>import</code>
+            時可自由命名
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <h5 id="sec-33"><em>具名匯出（Named Export）</em></h5>
+          <ul>
+            <li>
+              在
+              <code>src/utils/validator.js</code>
+              建立模組，並以
+              <strong>具名匯出</strong>
+              方式，匯出兩個驗證函式：
+
+              <pre><code class="language-none">// 帳號：只能英數字，4～12 字元
+export function isValidAccount(str) {
+  return /^[a-zA-Z0-9]{4,12}$/.test(str)
+}
+
+// 密碼：只能英數字，至少 6 字元
+export function isValidPassword(str) {
+  return /^[a-zA-Z0-9]{6,}$/.test(str)
+}
+</code></pre>
+            </li>
+            <li>
+              在其他程式中引入並使用：
+              <pre><code class="language-none">import { isValidAccount, isValidPassword } from &quot;@/utils/validator.js&quot;
+isValidAccount(str)
+</code></pre>
+            </li>
+          </ul>
+          <h5 id="sec-34"><em>預設匯出（Default Export）</em></h5>
+          <ul>
+            <li>
+              在
+              <code>src/utils/greeting.js</code>
+              建立模組，並以
+              <strong>預設匯出</strong>
+              方式，匯出歡迎訊息函式：
+
+              <pre><code class="language-none">export default function greet(name) {
+  return `歡迎光臨，${name}！柑仔店為您服務。`
+}
+</code></pre>
+            </li>
+            <li>
+              在其他程式中引入並使用：
+              <pre><code class="language-none">import greet from &quot;@/utils/greeting.js&quot;
+const message = greet(&quot;訪客&quot;)
+</code></pre>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <strong>重點：</strong>
+          <table>
+            <thead>
+              <tr>
+                <th>比較</th>
+                <th>具名匯出</th>
+                <th>預設匯出</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>匯出數量</td>
+                <td>可多個</td>
+                <td>只能一個</td>
+              </tr>
+              <tr>
+                <td>import 語法</td>
+                <td>import { 名稱 } from ...</td>
+                <td>import 任意名稱 from ...</td>
+              </tr>
+              <tr>
+                <td>常用場景</td>
+                <td>工具函式庫</td>
+                <td>單一功能模組</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+      <hr />
+      <h3 id="sec-35">03｜路由（Router）</h3>
+      <h4 id="sec-36">📝安裝及掛載路由</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            柑仔店是一個
+            <strong>SPA（單頁應用程式）</strong>
+            ，整個網站只有一個
+            <code>index.html</code>
+            ，頁面切換不會重新向伺服器請求
+            HTML。而且隨著功能增加（首頁、商品列表、購物車、結帳...），所有內容若塞在同一個元件中會越來越難維護。
+            導入
+            <strong>Vue Router</strong>
+            後，可以根據網址路徑動態切換顯示的元件，讓每個功能各自成為獨立頁面，同時保有
+            SPA 不重新載入整頁的流暢體驗。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              終端機執行安裝指令：
+              <pre><code class="language-bash">npm install vue-router
+</code></pre>
+            </li>
+            <li>
+              建立路由
+              <code>src\routers\index.js</code>
+              ，設定如下：
+
+              <pre><code class="language-none">import { createRouter, createWebHistory } from &quot;vue-router&quot;
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: &quot;路徑名稱&quot;,
+      name: &quot;路由名稱&quot;,
+      component: () =&gt; import(&quot;檔案路徑&quot;),
+    },
+  ],
+})
+export default router
+</code></pre>
+            </li>
+            <li>
+              設定
+              <code>src\main.js</code>
+              ，設定如下：
+
+              <pre><code class="language-none">import { createApp } from &quot;vue&quot;
+import App from &quot;./App.vue&quot;
+import router from &quot;./router&quot;
+const app = createApp(App)
+app.use(router)
+app.mount(&quot;#app&quot;)
+</code></pre>
+            </li>
+            <li>
+              App.vue 頁面內容預留區 放入
+              <code>&lt;RouterView /&gt;</code>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-37">📝建立網站導覽列</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>柑仔店會有多個頁面，需建立基本的網站導覽。</blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              建立「首頁」、「關於我們」的頁面路由
+              <pre><code class="language-none">{ path: &#39;路徑名稱&#39;, name: &#39;路由名稱&#39;, component: () =&gt; import(&#39;檔案路徑&#39;) }
+</code></pre>
+            </li>
+            <li>
+              在
+              <code>App.vue</code>
+              導覽列使用
+              <code>&lt;RouterLink&gt;</code>
+              ，以方便切換「首頁」、「關於我們」頁面
+
+              <pre><code class="language-none">&lt;RouterLink to=&quot;路徑&quot;&gt;XXX&lt;/RouterLink&gt;
+&lt;RouterLink :to=&quot;{ path: &#39;路徑&#39; }&quot;&gt;XXX&lt;/RouterLink&gt;
+&lt;!-- 推薦這種寫法 --&gt;
+&lt;RouterLink :to=&quot;{ name: &#39;路由名稱&#39; }&quot;&gt;XXX&lt;/RouterLink&gt;
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-38">📝建立商城巢狀路由</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            柑仔店的購物流程橫跨多個頁面（線上購物 → 商品資訊 → 購物車 → 結帳 →
+            訂單紀錄），這些頁面共用同一組導覽列，適合用巢狀路由統一管理，讓路由結構清晰易維護。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              在
+              <code>src/router/index.js</code>
+              中，於
+              <code>/shop</code>
+              路徑下建立以下兩個巢狀子路由：
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>頁面</th>
+                    <th>path</th>
+                    <th>name</th>
+                    <th>對應元件</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>線上購物</td>
+                    <td><code>/shop/list</code></td>
+                    <td><code>shop</code></td>
+                    <td><code>ShopView.vue</code></td>
+                  </tr>
+                  <tr>
+                    <td>商品資訊</td>
+                    <td><code>/shop/product</code></td>
+                    <td><code>product</code></td>
+                    <td><code>ShopProductView.vue</code></td>
+                  </tr>
+                </tbody>
+              </table>
+              <pre><code class="language-none">{
+  path: &#39;/shop&#39;,
+  children: [
+    { path: &#39;路徑名稱&#39;, name: &#39;路由名稱&#39;, component: () =&gt; import(&#39;檔案路徑&#39;) },
+    { ... },
+    ...
+  ],
+},
+</code></pre>
+            </li>
+            <li>
+              在
+              <code>src/router/index.js</code>
+              中，於
+              <code>/member</code>
+              路徑下建立以下三個巢狀子路由：
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>頁面</th>
+                    <th>path</th>
+                    <th>name</th>
+                    <th>對應元件</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>購物車</td>
+                    <td><code>/member/cart</code></td>
+                    <td><code>cart</code></td>
+                    <td><code>ShopCartView.vue</code></td>
+                  </tr>
+                  <tr>
+                    <td>結帳</td>
+                    <td><code>/member/checkout</code></td>
+                    <td><code>checkout</code></td>
+                    <td><code>ShopCheckoutView.vue</code></td>
+                  </tr>
+                  <tr>
+                    <td>訂單紀錄</td>
+                    <td><code>/member/order</code></td>
+                    <td><code>order</code></td>
+                    <td><code>ShopOrderView.vue</code></td>
+                  </tr>
+                </tbody>
+              </table>
+              <pre><code class="language-none">{
+  path: &#39;/member&#39;,
+  children: [
+    { path: &#39;路徑名稱&#39;, name: &#39;路由名稱&#39;, component: () =&gt; import(&#39;檔案路徑&#39;) },
+    { ... },
+    ...
+  ],
+},
+</code></pre>
+            </li>
+            <li>
+              在
+              <code>App.vue</code>
+              導覽列使用
+              <code>&lt;RouterLink&gt;</code>
+              建立「線上購物」、「購物車」、「訂單紀錄」頁面
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-39">📝建立迷路頁面</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客不小心輸入了一個不存在的網址，頁面一片空白什麼都沒有，體驗很差。
+            設定一個 404
+            頁面，當路由找不到對應頁面時，自動導向自訂的錯誤畫面，讓顧客知道「迷路了」。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              建立
+              <code>NotFoundView.vue</code>
+              ，設計其
+              <code>&lt;template&gt;</code>
+              與
+              <code>&lt;style&gt;</code>
+              內容：
+
+              <pre><code class="language-none">&lt;div class=&quot;text-center deer&quot;&gt;🦌 你麋鹿拉~&lt;/div&gt;
+</code></pre>
+              <pre><code class="language-css">.deer {
+  font-size: 100px;
+}
+</code></pre>
+            </li>
+            <li>
+              在
+              <code>src/router/index.js</code>
+              的
+              <code>routes</code>
+              陣列最末加入萬用路由，路徑為
+              <code>/:pathMatch(.*)*</code>
+              ，導向
+              <code>NotFoundView.vue</code>
+
+              <pre><code class="language-none">{
+  path: &#39;/:pathMatch(.*)*&#39;,
+  name: &#39;notFound&#39;,
+  component: () =&gt; import(&#39;@/views/NotFoundView.vue&#39;)
+}
+</code></pre>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <strong>重點：</strong>
+          <ul>
+            <li>
+              <code>/:pathMatch(.*)*</code>
+              此路由必須放在所有路由的
+              <strong>最後面</strong>
+              ，否則會攔截到正常頁面
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr />
+      <h3 id="sec-40">04｜生命週期（Lifecycle）</h3>
+      <h4 id="sec-41">📝頁面進入時自動打招呼</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            柑仔店希望在顧客進門時主動打招呼、離開時道別，讓購物體驗更有溫度。
+            利用生命週期鉤子，在頁面載入完成時自動顯示歡迎訊息，並在離開頁面前送上道別語。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              在「首頁」
+              <code>HomeView.vue</code>
+              中，使用
+              <code>onMounted</code>
+              於頁面載入後跳出
+              <code>alert(&#39;歡迎光臨！&#39;)</code>
+            </li>
+            <li>
+              使用
+              <code>onBeforeUnmount</code>
+              於頁面離開前跳出
+              <code>alert(&#39;謝謝光臨，歡迎下次再來！&#39;)</code>
+            </li>
+            <li>
+              將
+              <code>歡迎光臨！</code>
+              字串改用
+              <code>src/utils/greeting.js</code>
+              模組回傳：
+
+              <pre><code class="language-none">import greet from &quot;@/utils/greeting.js&quot;
+const message = greet(&quot;訪客&quot;)
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr />
+      <h3 id="sec-42">05｜響應式變數（ref / reactive）</h3>
+      <h4 id="sec-43">📝會員註冊表單-1</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            柑仔店推出會員制度，顧客需填寫基本資料完成註冊，頁面需即時顯示目前填寫的內容。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              建立一個「會員註冊」頁面
+              <code>RegistView.vue</code>
+              及設計其
+              <code>&lt;template&gt;</code>
+              內容
+
+              <pre><code class="language-copy">&lt;div class=&quot;col-md-6 m-auto&quot;&gt;
+  &lt;h3 class=&quot;mb-4 fw-bold&quot;&gt;我是標題&lt;/h3&gt;
+
+  &lt;!-- 表單區 --&gt;
+  &lt;div class=&quot;mb-3&quot;&gt;
+    &lt;label class=&quot;form-label&quot;&gt;姓名&lt;/label&gt;
+    &lt;input type=&quot;text&quot; class=&quot;form-control&quot; /&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;mb-3&quot;&gt;
+    &lt;label class=&quot;form-label&quot;&gt;帳號&lt;/label&gt;
+    &lt;input type=&quot;text&quot; class=&quot;form-control&quot; /&gt;
+    &lt;span class=&quot;form-text text-danger&quot;&gt;驗證文字&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;mb-3&quot;&gt;
+    &lt;label class=&quot;form-label&quot;&gt;密碼&lt;/label&gt;
+    &lt;input type=&quot;password&quot; class=&quot;form-control&quot; /&gt;
+    &lt;span class=&quot;form-text text-danger&quot;&gt;驗證文字&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;mb-3&quot;&gt;
+    &lt;label class=&quot;form-label&quot;&gt;確認密碼&lt;/label&gt;
+    &lt;input type=&quot;password&quot; class=&quot;form-control&quot; /&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;form-check mb-4&quot;&gt;
+    &lt;input class=&quot;form-check-input&quot; type=&quot;checkbox&quot; id=&quot;agreeCheck&quot; /&gt;
+    &lt;label class=&quot;form-check-label&quot; for=&quot;agreeCheck&quot;&gt;
+      我已閱讀並同意會員服務條款
+    &lt;/label&gt;
+  &lt;/div&gt;
+
+  &lt;!-- 即時預覽 --&gt;
+  &lt;div class=&quot;my-4 p-3 bg-body-secondary rounded&quot;&gt;
+    &lt;p class=&quot;fw-bold mb-2&quot;&gt;📋 填寫預覽&lt;/p&gt;
+    &lt;ul class=&quot;list-unstyled mb-0 small&quot;&gt;
+      &lt;li&gt;姓名：&lt;/li&gt;
+      &lt;li&gt;帳號：&lt;/li&gt;
+      &lt;li&gt;確認密碼：&lt;/li&gt;
+      &lt;li&gt;同意條款：&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+
+  &lt;button class=&quot;btn btn-primary w-100 py-2&quot;&gt;完成註冊&lt;/button&gt;
+&lt;/div&gt;
+</code></pre>
+            </li>
+            <li>
+              為「會員註冊」頁面建立路由設定以及在
+              <code>App.vue</code>
+              導覽列使用
+              <code>&lt;RouterLink&gt;</code>
+              建立連結
+            </li>
+            <li>
+              使用
+              <code>ref</code>
+              宣告「標題變數 title」，初始值為
+              <code>會員註冊</code>
+            </li>
+            <li>
+              使用
+              <code>ref</code>
+              宣告「是否同意變數 agree」，初始值為
+              <code>false</code>
+            </li>
+            <li>
+              使用
+              <code>reactive</code>
+              宣告一個「會員物件 member」，包含
+              <code>name（姓名）</code>
+              、
+              <code>account（帳號）</code>
+              、
+              <code>password（密碼）</code>
+              、
+              <code>confirmPassword（確認密碼）</code>
+            </li>
+            <li>
+              將「標題變數 title」，用
+              <code>{{ 變數 }}</code>
+              顯示於標題
+            </li>
+            <li>
+              將「會員物件」所有欄位，用
+              <code>{{ 變數 }}</code>
+              即時顯示在表單下方（預覽區）
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr />
+      <h3 id="sec-44">06｜資料綁定（v-bind / v-model）</h3>
+      <h4 id="sec-45">📝會員註冊表單-2</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            柑仔店會員註冊表單已建好靜態 HTML，現在要讓它「活起來」- 用
+            <code>v-model</code>
+            綁定輸入欄位，讓預覽區即時更新；並用
+            <code>v-bind</code>
+            根據填寫狀態動態改變樣式與按鈕行為。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          使用
+          <code>RegistView.vue</code>
+          ，完成以下資料綁定：
+          <ul>
+            <li>
+              用
+              <code>v-model</code>
+              綁定四個輸入欄位（姓名、帳號、密碼、確認密碼）到
+              <code>member</code>
+              物件
+            </li>
+            <li>
+              用
+              <code>v-model</code>
+              綁定「同意條款」勾選框到
+              <code>agree</code>
+              變數
+            </li>
+            <li>
+              用
+              <code>v-bind:class</code>
+              當「agree=true」時，讓「填寫預覽」的
+              <code>&lt;div&gt;</code>
+              套用
+              <code>bg-success-subtle</code>
+              樣式
+            </li>
+            <li>
+              用
+              <code>v-bind:disabled</code>
+              讓「完成註冊」按鈕在
+              <code>agree</code>
+              為
+              <code>false</code>
+              時無法點擊
+            </li>
+            <li>
+              用
+              <code>src/utils/validator.js</code>
+              具名模組驗證
+              <code>account（帳號）</code>
+              、
+              <code>password（密碼）</code>
+              是否符合規則
+
+              <pre><code class="language-none">import { isValidAccount, isValidPassword } from &quot;@/utils/validator.js&quot;
+isValidAccount(str)
+isValidPassword(str)
+</code></pre>
+              <pre><code class="language-none">&lt;span class=&quot;form-text text-danger&quot;&gt;{{ isValidAccount(str) }}&lt;/span&gt;
+&lt;span class=&quot;form-text text-danger&quot;&gt;{{ isValidPassword(str) }}&lt;/span&gt;
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr />
+      <h3 id="sec-46">07｜事件綁定（v-on）</h3>
+      <h4 id="sec-47">📝商品列表互動</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>顧客瀏覽商品時可以用搜尋及分類篩選商品。</blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          使用
+          <code>ShopView.vue</code>
+          ，在第一組搜尋列加入以下互動行為：
+          <ul>
+            <li>
+              使用
+              <code>ref</code>
+              宣告「分類 categoryId」，初始值為
+              <code>空白</code>
+            </li>
+            <li>
+              使用
+              <code>ref</code>
+              宣告「關鍵字 keyword」，初始值為
+              <code>空白</code>
+            </li>
+            <li>
+              用
+              <code>v-model</code>
+              綁定
+              <code>categoryId</code>
+              變數
+            </li>
+            <li>
+              用
+              <code>v-model</code>
+              綁定
+              <code>keyword</code>
+              變數
+            </li>
+            <li>
+              對分類下拉選單加上
+              <code>@change</code>
+              ，切換分類時以
+              <code>console.log</code>
+              印出目前選取的分類名稱
+            </li>
+            <li>
+              在搜尋框加上
+              <code>@keyup.enter</code>
+              ，按下 Enter 後以
+              <code>console.log</code>
+              印出目前輸入的關鍵字
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-48">📝商品資訊互動</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客瀏覽商品資訊時可以點擊「加入購物車」將商品加入購物車。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          使用
+          <code>ShopProductView.vue</code>
+          ，加入以下互動行為：
+          <ul>
+            <li>
+              對「加入購物車」按鈕加上
+              <code>@click</code>
+              ，點擊後彈出
+              <code>alert(&#39;已加入購物車&#39;)</code>
+              提示視窗
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr />
+      <h3 id="sec-49">08｜條件渲染（v-if / v-show）</h3>
+      <h4 id="sec-50">📝贊助金額提示訊息</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            開店不容易，老闆說要增加一個贊助頁面，根據使用者輸入的金額，給予不同情緒價值的訊息。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              建立一個「贊助我」頁面
+              <code>DonateView.vue</code>
+              及設計其
+              <code>&lt;template&gt;</code>
+              內容
+
+              <pre><code class="language-copy">&lt;div class=&quot;container col-md-6 py-5&quot;&gt;
+  &lt;div class=&quot;text-center mb-4&quot;&gt;
+    &lt;div style=&quot;font-size: 100px&quot;&gt;💰&lt;/div&gt;
+    &lt;h2 class=&quot;fw-bold&quot;&gt;開店不容易，歡迎斗內&lt;/h2&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;card border rounded p-4&quot;&gt;
+    &lt;div class=&quot;mb-3&quot;&gt;
+      &lt;label class=&quot;form-label fw-semibold&quot;&gt;贊助金額（NT$）&lt;/label&gt;
+      &lt;input type=&quot;number&quot; class=&quot;form-control&quot; min=&quot;1&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;mb-3&quot;&gt;&lt;!-- 情緒價值的訊息 --&gt;&lt;/div&gt;
+    &lt;button type=&quot;button&quot; class=&quot;btn btn-primary w-100&quot;&gt;贊助&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;!-- 贊助成功後顯示 --&gt;
+  &lt;div class=&quot;card border rounded p-4&quot;&gt;
+    &lt;div class=&quot;text-center&quot;&gt;
+      &lt;label style=&quot;font-size: 100px&quot;&gt;🎊&lt;/label&gt;
+      &lt;p class=&quot;fs-4 fw-bold&quot;&gt;感謝你贊助的 OO 元&lt;/p&gt;
+      &lt;button type=&quot;button&quot; class=&quot;btn btn-primary w-100&quot;&gt;再次贊助&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+            </li>
+            <li>
+              為「贊助我」頁面建立路由設定以及在
+              <code>App.vue</code>
+              導覽列使用
+              <code>&lt;RouterLink&gt;</code>
+              建立連結
+            </li>
+            <li>
+              宣告一個金額變數
+              <code>amount</code>
+              ，預設（
+              <code>null</code>
+              ） ，並提供
+              <code>&lt;input type=&quot;number&quot;&gt;</code>
+              讓使用者輸入及綁定
+            </li>
+            <li>
+              依照以下條件，使用
+              <code>v-if / v-else-if / v-else</code>
+              顯示對應訊息
+            </li>
+            <li>未輸入（空值）：顯示「👀 輸入金額，看看會發生什麼事...」</li>
+            <li>金額 1 ~ 99：顯示「😡 太小氣了！請給多一點」</li>
+            <li>金額 100 ~ 499：顯示「😍 太感謝了！這杯咖啡超香的」</li>
+            <li>金額 ≥ 500：顯示「🤑 謝謝乾爹！感激的痛哭流涕」</li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-51">📝贊助完成畫面切換</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            贊助送出後，需要隱藏表單、顯示感謝畫面，讓使用者感受到完整的互動回饋。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              宣告
+              <code>submitted</code>
+              變數（預設
+              <code>false</code>
+              ）
+            </li>
+            <li>
+              點擊「贊助」按鈕後將
+              <code>submitted</code>
+              設為
+              <code>true</code>
+            </li>
+            <li>
+              使用
+              <code>v-show</code>
+              控制兩個區塊的顯示：
+              <ul>
+                <li>
+                  <code>submitted == false</code>
+                  ：顯示贊助表單
+                </li>
+                <li>
+                  <code>submitted == true</code>
+                  ：顯示感謝畫面
+                </li>
+              </ul>
+            </li>
+            <li>
+              感謝畫面提供「再次贊助」按鈕，可將
+              <code>submitted</code>
+              重置為
+              <code>false</code>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr />
+      <h3 id="sec-52">09｜迴圈渲染（v-for）</h3>
+      <h4 id="sec-53">📝顯示線上購物商品清單</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>顧客需要在柑仔店看到所有上架商品。</blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          使用
+          <code>ShopView.vue</code>
+          <ul>
+            <li>
+              宣告以下 3 筆類別陣列：
+              <pre><code class="language-copy">const categories = ref([
+  {
+    id: 1,
+    name: &quot;零食&quot;,
+  },
+  {
+    id: 2,
+    name: &quot;飲料&quot;,
+  },
+  {
+    id: 3,
+    name: &quot;糕點&quot;,
+  },
+])
+</code></pre>
+            </li>
+            <li>
+              宣告以下 6 筆商品陣列：
+              <pre><code class="language-copy">const products = ref([
+  {
+    id: 1,
+    name: &quot;古早味麥芽餅&quot;,
+    price: 35,
+    categoryId: 1,
+    desc: &quot;用傳統配方製作，香脆餅皮包覆濃郁麥芽糖，勾起童年的甜蜜記憶。&quot;,
+  },
+  {
+    id: 2,
+    name: &quot;手工鳳梨酥&quot;,
+    price: 25,
+    categoryId: 3,
+    desc: &quot;嚴選新鮮鳳梨熬製內餡，外皮酥脆、甜中帶酸，伴手禮首選。&quot;,
+  },
+  {
+    id: 3,
+    name: &quot;黑糖珍珠奶茶&quot;,
+    price: 65,
+    categoryId: 2,
+    desc: &quot;自製黑糖珍珠 Q 彈有嚼勁，搭配鮮奶茶香氣濃醇。&quot;,
+  },
+  {
+    id: 4,
+    name: &quot;原味米餅&quot;,
+    price: 20,
+    categoryId: 1,
+    desc: &quot;天然米穀製作，無添加香精，輕鬆享受健康好滋味。&quot;,
+  },
+  {
+    id: 5,
+    name: &quot;檸檬塔&quot;,
+    price: 45,
+    categoryId: 3,
+    desc: &quot;法式塔皮搭配手工檸檬凝乳，酸甜平衡，每口都是幸福。&quot;,
+  },
+  {
+    id: 6,
+    name: &quot;烏龍綠茶&quot;,
+    price: 28,
+    categoryId: 2,
+    desc: &quot;高山烏龍茶葉冷泡 8 小時，清爽回甘，無糖無咖啡因。&quot;,
+  },
+  {
+    id: 7,
+    name: &quot;花生牛奶糖&quot;,
+    price: 22,
+    categoryId: 1,
+    desc: &quot;濃郁花生香氣融合牛奶香甜，入口即化，是辦公室必備的解嘴饞零食。&quot;,
+  },
+  {
+    id: 8,
+    name: &quot;鳳梨豆瓣醬&quot;,
+    price: 60,
+    categoryId: 1,
+    desc: &quot;選用在地新鮮鳳梨與豆瓣混合醃製，酸鹹香辣完美平衡，下飯超對味。&quot;,
+  },
+])
+</code></pre>
+            </li>
+            <li>
+              用
+              <code>v-for</code>
+              將所有類別渲染為下拉選單的選項
+            </li>
+            <li>
+              用
+              <code>v-for</code>
+              將所有商品渲染
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-54">📝整合商品資訊功能</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            根據網址傳入之
+            <code>id</code>
+            讓該頁面知道要顯示哪一筆資料，並顯示該商品標籤與庫存狀態。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              於
+              <code>ShopProductView.vue</code>
+              宣告以下 8 筆商品陣列：
+
+              <pre><code class="language-copy">const products = ref([
+  {
+    id: 1,
+    name: &quot;古早味麥芽餅&quot;,
+    price: 35,
+    categoryId: &quot;零食&quot;,
+    desc: &quot;用傳統配方製作，香脆餅皮包覆濃郁麥芽糖，勾起童年的甜蜜記憶。&quot;,
+    tags: [&quot;人氣&quot;, &quot;古早味&quot;],
+    stock: 28,
+  },
+  {
+    id: 2,
+    name: &quot;手工鳳梨酥&quot;,
+    price: 25,
+    categoryId: &quot;糕點&quot;,
+    desc: &quot;嚴選新鮮鳳梨熬製內餡，外皮酥脆、甜中帶酸，伴手禮首選。&quot;,
+    tags: [&quot;特價&quot;, &quot;手工&quot;],
+    stock: 5,
+  },
+  {
+    id: 3,
+    name: &quot;黑糖珍珠奶茶&quot;,
+    price: 65,
+    categoryId: &quot;飲料&quot;,
+    desc: &quot;自製黑糖珍珠 Q 彈有嚼勁，搭配鮮奶茶香氣濃醇。&quot;,
+    tags: [&quot;人氣&quot;, &quot;新品&quot;, &quot;熱銷&quot;],
+    stock: 0,
+  },
+  {
+    id: 4,
+    name: &quot;原味米餅&quot;,
+    price: 20,
+    categoryId: &quot;零食&quot;,
+    desc: &quot;天然米穀製作，無添加香精，輕鬆享受健康好滋味。&quot;,
+    tags: [&quot;特價&quot;, &quot;無添加&quot;],
+    stock: 52,
+  },
+  {
+    id: 5,
+    name: &quot;檸檬塔&quot;,
+    price: 45,
+    categoryId: &quot;糕點&quot;,
+    desc: &quot;法式塔皮搭配手工檸檬凝乳，酸甜平衡，每口都是幸福。&quot;,
+    tags: [&quot;季節限定&quot;],
+    stock: 8,
+  },
+  {
+    id: 6,
+    name: &quot;烏龍綠茶&quot;,
+    price: 28,
+    categoryId: &quot;飲料&quot;,
+    desc: &quot;高山烏龍茶葉冷泡 8 小時，清爽回甘，無糖無咖啡因。&quot;,
+    tags: [&quot;特價&quot;, &quot;無糖&quot;],
+    stock: 0,
+  },
+  {
+    id: 7,
+    name: &quot;花生牛奶糖&quot;,
+    price: 22,
+    categoryId: &quot;零食&quot;,
+    desc: &quot;濃郁花生香氣融合牛奶香甜，入口即化，是辦公室必備的解嘴饞零食。&quot;,
+    tags: [&quot;經典&quot;, &quot;人氣&quot;],
+    stock: 36,
+  },
+  {
+    id: 8,
+    name: &quot;鳳梨豆瓣醬&quot;,
+    price: 60,
+    categoryId: &quot;零食&quot;,
+    desc: &quot;選用在地新鮮鳳梨與豆瓣混合醃製，酸鹹香辣完美平衡，下飯超對味。&quot;,
+    tags: [&quot;特色&quot;, &quot;下飯&quot;],
+    stock: 0,
+  },
+])
+</code></pre>
+            </li>
+            <li>
+              在「商品資訊」
+              <code>ShopProductView.vue</code>
+              頁面中，根據傳入的
+              <code>id</code>
+              （分別使用查詢參數及路由參數實作） ，帶出對應商品資訊
+            </li>
+            <li>
+              用
+              <code>v-for</code>
+              渲染商品的標籤
+              <code>tags</code>
+            </li>
+            <li>
+              用
+              <code>v-for</code>
+              渲染數量 1~10
+            </li>
+            <li>
+              用
+              <code>v-if / v-else-if / v-else</code>
+              根據庫存量
+              <code>stock == 0</code>
+              ：將「加入購物車」按鈕改為顯示為「已售完」，且不渲染數量功能
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-55">📝整合商品資訊導頁功能 - 以查詢參數路由方式</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客在商品列表點擊商品後，要跳轉至商品資訊頁，並帶入商品
+            <code>id</code>
+            讓該頁面知道要顯示哪一筆資料。 使用查詢參數的方式傳遞，網址格式為
+            <code>/shop/product?id=1</code>
+            。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              在
+              <code>ShopView.vue</code>
+              的商品卡片，點擊時用
+              <code>&lt;RouterLink&gt;</code>
+              將該商品
+              <code>id</code>
+              傳至
+              <code>ShopProductView.vue</code>
+              <pre><code class="language-copy">&lt;RouterLink
+  :to=&quot;{ name: &#39;product&#39;, query: { id: product.id } }&quot;
+&gt;&lt;/RouterLink&gt;
+</code></pre>
+            </li>
+            <li>
+              在
+              <code>ShopProductView.vue</code>
+              取得查詢參數：
+              <pre><code class="language-none">import { useRoute } from &quot;vue-router&quot;
+const route = useRoute()
+const id = route.query.id
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-56">📝整合商品資訊導頁功能 - 以動態參數路由方式</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客在商品列表點擊商品後，要跳轉至商品資訊頁，並帶入商品
+            <code>id</code>
+            讓該頁面知道要顯示哪一筆資料。 使用動態參數的方式傳遞，網址格式為
+            <code>/shop/product/1</code>
+            ，比查詢參數更簡潔，也符合 RESTful 風格。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              複製
+              <code>ShopView.vue</code>
+              為
+              <code>ShopView2.vue</code>
+              ，複製
+              <code>ShopProductView.vue</code>
+              為
+              <code>ShopProductView2.vue</code>
+            </li>
+            <li>
+              為
+              <code>ShopView2.vue</code>
+              及
+              <code>ShopProductView2.vue</code>
+              建立路由
+              <code>list2</code>
+              、
+              <code>product2</code>
+            </li>
+            <li>
+              在
+              <code>App.vue</code>
+              建立
+              <code>&lt;RouterLink&gt;</code>
+              導向路由
+              <code>list2</code>
+              ；注意：因為操作流程特性，故此處不設
+              <code>product2</code>
+              的連結。
+            </li>
+            <li>
+              在
+              <code>ShopView2.vue</code>
+              的商品卡片，點擊時用
+              <code>&lt;RouterLink&gt;</code>
+              帶導向至：
+              <pre><code class="language-copy">&lt;RouterLink
+  :to=&quot;{ name: &#39;product2&#39;, params: { id: product.id } }&quot;
+&gt;&lt;/RouterLink&gt;
+</code></pre>
+            </li>
+            <li>
+              在
+              <code>ShopProductView2.vue</code>
+              取得查詢參數：
+              <pre><code class="language-none">import { useRoute } from &quot;vue-router&quot;
+const route = useRoute()
+const id = route.params.id
+</code></pre>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <strong>重點：</strong>
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>查詢參數</th>
+                <th>動態參數</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>網址格式</td>
+                <td><code>/product?參數=值</code></td>
+                <td><code>/order/值</code></td>
+              </tr>
+              <tr>
+                <td>取得方式</td>
+                <td><code>route.query.參數</code></td>
+                <td><code>route.params.參數</code></td>
+              </tr>
+              <tr>
+                <td>路由設定</td>
+                <td>不需修改 path</td>
+                <td>
+                  path 需加上
+                  <code>:參數</code>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+      <hr />
+      <h3 id="sec-57">10｜計算屬性（computed）</h3>
+      <h4 id="sec-58">📝商品搜尋與分類篩選</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客在商品列表輸入關鍵字或切換分類後，商品清單需要即時過濾，只顯示符合條件的商品。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          使用
+          <code>ShopView.vue</code>
+          ，在第二組搜尋列加入以下互動行為：
+          <ul>
+            <li>
+              搜尋框用
+              <code>v-model</code>
+              綁定
+              <code>keyword2</code>
+              ，分類下拉用
+              <code>v-model</code>
+              綁定
+              <code>categoryId2</code>
+            </li>
+            <li>
+              用
+              <code>computed</code>
+              建立
+              <code>filteredProducts</code>
+              ，同時過濾兩個條件：
+
+              <ul>
+                <li>
+                  <code>keyword2</code>
+                  不為空時，過濾
+                  <code>name</code>
+                  包含關鍵字的商品（不分大小寫）
+                </li>
+                <li>
+                  <code>categoryId2</code>
+                  不為空時，只顯示該分類的商品
+                </li>
+                <li>兩個條件同時成立時取交集</li>
+              </ul>
+              <pre><code class="language-none">import { ref, computed } from &quot;vue&quot;
+
+const filteredProducts = computed(() =&gt; {
+  return products.value.filter((product) =&gt; {
+    const matchKeyword =
+      !keyword2.value ||
+      product.name.toLowerCase().includes(keyword2.value.toLowerCase())
+
+    const matchCategory =
+      !categoryId2.value || product.categoryId === categoryId2.value
+
+    return matchKeyword &amp;&amp; matchCategory
+  })
+})
+</code></pre>
+            </li>
+            <li>
+              將此區塊的商品列表
+              <code>v-for</code>
+              來源改為
+              <code>filteredProducts</code>
+            </li>
+            <li>
+              用
+              <code>filteredProducts.length</code>
+              顯示「共 N 筆結果」
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr />
+      <h3 id="sec-59">11｜Pinia 狀態管理</h3>
+      <h4 id="sec-60">📝安裝及掛載 Pinia</h4>
+      <ul>
+        <li>
+          終端機執行安裝指令：
+          <pre><code class="language-bash">npm install pinia
+</code></pre>
+        </li>
+        <li>
+          在
+          <code>src/main.js</code>
+          引入並掛載 Pinia：
+          <pre><code class="language-none">import { createPinia } from &quot;pinia&quot;
+app.use(createPinia())
+</code></pre>
+        </li>
+      </ul>
+      <h4 id="sec-61">📝建立購物車 Store</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客在「線上購物」點擊「加入購物車」後，「購物車」頁面要能看到已選商品、數量與金額，並提供移除功能。這些資料需要跨頁面共用，適合用
+            Pinia Store 統一管理。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              新增
+              <code>src/stores/cart.js</code>
+              檔案，並建立
+              <code>useCartStore</code>
+              ：
+
+              <pre><code class="language-none">import { defineStore } from &quot;pinia&quot;
+export const useCartStore = defineStore(&quot;cart&quot;, () =&gt; {
+  // 變數、方法、計算屬性...
+  return {}
+})
+</code></pre>
+            </li>
+            <li>
+              使用
+              <code>ref</code>
+              宣告
+              <code>items</code>
+              陣列，用來存放購物車品項
+            </li>
+            <li>
+              建立「加入購物車」
+              <code>addItem(product)</code>
+              方法，
+              <code>product</code>
+              包含
+              <code>{ id, name, price, quantity }</code>
+              ；若商品已存在（
+              <code>id</code>
+              相同），則增加數量
+            </li>
+            <li>
+              建立「移除商品」
+              <code>removeItem(id)</code>
+              方法，依
+              <code>id</code>
+              從
+              <code>items</code>
+              中刪除對應商品
+            </li>
+            <li>
+              建立「數量增減」
+              <code>reduceItem(id, qty)</code>
+              方法，依
+              <code>id</code>
+              從
+              <code>items</code>
+              中增減對應商品數量
+            </li>
+            <li>
+              使用
+              <code>computed</code>
+              宣告「購物車總金額」
+              <code>total</code>
+              ，將每項商品的
+              <code>price × quantity</code>
+              加總
+            </li>
+            <li>
+              將
+              <code>items</code>
+              、
+              <code>addItem</code>
+              、
+              <code>removeItem</code>
+              、
+              <code>total</code>
+              一起
+              <code>return</code>
+              ，對外暴露
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-62">📝商品加入購物車</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客可於商品資訊頁，選取商品數量，並加入購物車。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          使用
+          <code>ShopProductView.vue</code>
+          <ul>
+            <li>
+              引入並使用
+              <code>useCartStore</code>
+            </li>
+            <li>
+              「加入購物車」按鈕按下時，需將商品資料(包含
+              <code>{ id, name, price, quantity }</code>
+              )使用
+              <code>useCartStore.addItem(product)</code>
+              加入至 pinia 狀態中。
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-63">📝購物車頁面整合</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客在商品資訊頁加入購物車後，切換至購物車頁面應能看到完整的商品清單與金額。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          使用
+          <code>ShopCartView.vue</code>
+          <ul>
+            <li>
+              引入並使用
+              <code>useCartStore</code>
+            </li>
+            <li>
+              用
+              <code>v-for</code>
+              將
+              <code>cartStore.items</code>
+              渲染成購物車表格（品項、單價、數量、小計）
+            </li>
+            <li>
+              對「+/-」按鈕加上
+              <code>@click</code>
+              ，點擊後增加或減少該商品數量
+            </li>
+            <li>
+              「移除」按鈕呼叫
+              <code>cartStore.removeItem(id)</code>
+              刪除商品
+            </li>
+            <li>
+              顯示
+              <code>cartStore.total</code>
+              作為訂單金額合計
+            </li>
+            <li>
+              若購物車為空，用
+              <code>v-if</code>
+              顯示「購物車是空的，快去選購吧！」
+            </li>
+            <li>
+              「前往商品列表」按鈕按下時，用
+              <code>router.push()</code>
+              導向「線上購物」頁面
+            </li>
+            <li>
+              「前往結帳」按鈕按下時，用
+              <code>router.push()</code>
+              導向「結帳」頁面
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-64">📝結帳頁面整合</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>顧客在結帳頁面應能看到完整的商品清單與金額。</blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          使用
+          <code>ShopCheckoutView.vue</code>
+          <ul>
+            <li>
+              引入並使用
+              <code>useCartStore</code>
+            </li>
+            <li>
+              用
+              <code>v-for</code>
+              將
+              <code>cartStore.items</code>
+              渲染成購物車表格（品項、單價、數量、小計）
+            </li>
+            <li>
+              對「+/-」按鈕加上
+              <code>@click</code>
+              ，點擊後增加或減少該商品數量
+            </li>
+            <li>
+              顯示
+              <code>cartStore.total</code>
+              作為訂單金額合計
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-65">📝安裝及掛載 pinia-plugin-persistedstate</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客把商品加入購物車後，一不小心按了 F5 重新整理，購物車卻清空了！
+            因為 Pinia 的狀態預設存在記憶體中，頁面一刷新就消失。 安裝
+            <code>pinia-plugin-persistedstate</code>
+            ，讓購物車資料自動同步到
+            <code>localStorage</code>
+            ，重整後依然保留。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              終端機執行安裝指令：
+              <pre><code class="language-bash">npm install pinia-plugin-persistedstate
+</code></pre>
+            </li>
+            <li>
+              在
+              <code>src/main.js</code>
+              引入並掛載外掛：
+
+              <pre><code class="language-none">import persist from &quot;pinia-plugin-persistedstate&quot;
+const pinia = createPinia()
+pinia.use(persist)
+app.use(pinia)
+</code></pre>
+            </li>
+            <li>
+              在
+              <code>src/stores/cart.js</code>
+              的
+              <code>defineStore</code>
+              第三個參數啟用持久化：
+
+              <pre><code class="language-none">export const useCartStore = defineStore(
+  &quot;cart&quot;,
+  () =&gt; {
+    // ... state &amp; actions
+  },
+  { persist: true },
+)
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr />
+      <h3 id="sec-66">12｜監聽（watch / watchEffect）</h3>
+      <h4 id="sec-67">📝watch - 結帳運費提示</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客在結帳頁面調整商品數量時，系統需要即時顯示目前是否達到免運門檻，以及9折優惠（滿
+            1000 元免運、滿2000元9折）。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              使用
+              <code>ShopCheckoutView.vue</code>
+              ，加入以下監聽行為：
+            </li>
+            <li>
+              使用
+              <code>ref</code>
+              宣告
+              <code>shipMessage</code>
+              ，預設空白，用於顯示是否免運的提示文字
+            </li>
+            <li>
+              使用
+              <code>ref</code>
+              宣告
+              <code>shipFee</code>
+              ，預設 0
+            </li>
+            <li>
+              使用
+              <code>ref</code>
+              宣告
+              <code>discountMessage</code>
+              變數，預設空白，用於顯示是否套用九折提示文字
+            </li>
+            <li>
+              使用
+              <code>ref</code>
+              宣告
+              <code>discountFee</code>
+              變數，預設 0
+            </li>
+            <li>
+              從
+              <code>useCartStore</code>
+              取得
+              <code>cartStore.total</code>
+              作為訂單小計，並使用
+              <code>watch</code>
+              監聽
+              <code>total</code>
+              ，接收
+              <code>newVal</code>
+              與
+              <code>oldVal</code>
+              ：
+
+              <pre><code class="language-none">import { watch } from &quot;vue&quot;
+watch(
+  () =&gt; source,
+  (newVal, oldVal) =&gt; {
+    // 當 source 變化時執行
+  },
+)
+</code></pre>
+            </li>
+            <li>
+              <code>newVal &gt;= 1000</code>
+              ：
+              <code>shipMessage</code>
+              顯示「🎉 已達免運門檻，免收運費！」，
+              <code>shipFee = 0</code>
+            </li>
+            <li>
+              <code>newVal &lt; 1000</code>
+              ：
+              <code>shipMessage</code>
+              顯示「🚚 運費 NT$ 60，差 $ XX 元即可免運」（XX 為差額），
+              <code>shipFee=60</code>
+            </li>
+            <li>
+              <code>newVal &gt;= 2000</code>
+              ：
+              <code>discountMessage</code>
+              顯示「已享折扣 XX 元」，
+              <code>discountFee = cartStore.total * 0.1</code>
+            </li>
+            <li>
+              <code>newVal &lt; 2000</code>
+              ：
+              <code>discountMessage</code>
+              顯示「差 $ XX 元，即可享 9 折優惠」，
+              <code>discountFee = 0</code>
+            </li>
+            <li>
+              將
+              <code>oldVal</code>
+              以
+              <code>console.log</code>
+              印出
+            </li>
+            <li>
+              加上
+              <code>{ immediate: true }</code>
+              ，在vue掛載後可立即觸發
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-68">📝watchEffect - 自動同步結帳訂單摘要</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            結帳需要同時追蹤訂單小計、運費及折扣，任一項改變時就自動更新「應付金額」的顯示，無需手動指定監聽哪個變數。
+            並檢查「姓名」、「電話」及「收件地址」欄位是否填寫，才能將訂單送出。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              使用
+              <code>ShopCheckoutView.vue</code>
+              ，並對「訂單明細自動更新」及「確認送出檢查」加入監聽行為：
+            </li>
+          </ul>
+          <h5 id="sec-69"><em>訂單明細自動更新</em></h5>
+          <ul>
+            <li>
+              使用
+              <code>ref</code>
+              宣告
+              <code>totalAmount</code>
+              ，預設
+              <code>0</code>
+            </li>
+            <li>
+              用
+              <code>watchEffect</code>
+              處理自動追蹤，
+              <code>totalAmount = cartStore.total + shipFee - discountFee</code>
+              <pre><code class="language-none">import { watchEffect } from &quot;vue&quot;
+watchEffect(() =&gt; {
+  totalAmount.value = cartStore.total + shipFee.value - discountFee.value
+})
+</code></pre>
+            </li>
+          </ul>
+          <h5 id="sec-70"><em>確認送出檢查</em></h5>
+          <ul>
+            <li>
+              使用
+              <code>reactive</code>
+              宣告
+              <code>info</code>
+              ，預設如下
+
+              <pre><code class="language-none">const info = reactive({
+  name: &quot;&quot;,
+  phone: &quot;&quot;,
+  address: &quot;&quot;,
+})
+</code></pre>
+            </li>
+            <li>
+              使用
+              <code>ref</code>
+              宣告
+              <code>done</code>
+              ，預設
+              <code>false</code>
+              ，並將
+              <code>done</code>
+              以
+              <code>v-bind:disabled</code>
+              綁定至「確認送出訂單」按鈕
+            </li>
+            <li>
+              用
+              <code>watchEffect</code>
+              處理自動追蹤，
+              <code>
+                done.value = info.name != &#39;&#39; &amp;&amp; info.phone
+                !=&#39;&#39; &amp;&amp; info.address != &#39;&#39;
+              </code>
+
+              <pre><code class="language-none">watchEffect(() =&gt; {
+  done.value = info.name != &quot;&quot; &amp;&amp; info.phone != &quot;&quot; &amp;&amp; info.address != &quot;&quot;
+})
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr />
+      <h3 id="sec-71">13｜元件（Component）</h3>
+      <h4 id="sec-72">📝訂單列表與訂單卡片元件 - 父傳子</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客在「訂單紀錄」頁面可以看到所有歷史訂單，每張訂單的格式相同，適合封裝成子元件重複使用，父頁面只需負責提供資料。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <h5><em>前置作業</em></h5>
+
+          <ul>
+            <li>
+              使用
+              <code>ShopOrderView.vue</code>
+              ，宣告以下 5 筆陣列：
+
+              <pre><code class="language-copy">const orders = ref([
+  {
+    id: &quot;ORD-20260401-001&quot;,
+    status: &quot;已完成&quot;,
+    date: &quot;2026-04-01 10:23:45&quot;,
+    invoice: &quot;AB-12345678&quot;,
+    total: 215,
+    receiver: &quot;王小明&quot;,
+    phone: &quot;0912-345-678&quot;,
+    address: &quot;台北市大安區信義路四段 100 號 5 樓&quot;,
+    items: [
+      { id: 1, name: &quot;古早味麥芽餅&quot;, qty: 2, price: 35 },
+      { id: 2, name: &quot;手工鳳梨酥&quot;, qty: 3, price: 25 },
+      { id: 6, name: &quot;烏龍綠茶&quot;, qty: 2, price: 28 },
+      { id: 4, name: &quot;原味米餅&quot;, qty: 1, price: 20 },
+    ],
+  },
+  {
+    id: &quot;ORD-20260408-002&quot;,
+    status: &quot;處理中&quot;,
+    date: &quot;2026-04-08 14:05:12&quot;,
+    invoice: null,
+    total: 189,
+    receiver: &quot;李美玲&quot;,
+    phone: &quot;0936-789-012&quot;,
+    address: &quot;新北市板橋區文化路一段 55 號 3 樓&quot;,
+    items: [
+      { id: 5, name: &quot;檸檬塔&quot;, qty: 1, price: 45 },
+      { id: 6, name: &quot;烏龍綠茶&quot;, qty: 2, price: 28 },
+      { id: 1, name: &quot;古早味麥芽餅&quot;, qty: 1, price: 35 },
+      { id: 7, name: &quot;花生牛奶糖&quot;, qty: 2, price: 30 },
+    ],
+  },
+  {
+    id: &quot;ORD-20260412-003&quot;,
+    status: &quot;已取消&quot;,
+    date: &quot;2026-04-12 09:41:30&quot;,
+    invoice: null,
+    total: 120,
+    receiver: &quot;陳大偉&quot;,
+    phone: &quot;0958-111-222&quot;,
+    address: &quot;台中市西區台灣大道二段 200 號&quot;,
+    items: [
+      { id: 8, name: &quot;鳳梨豆瓣醬&quot;, qty: 1, price: 60 },
+      { id: 3, name: &quot;黑糖珍珠奶茶&quot;, qty: 2, price: 30 },
+    ],
+  },
+  {
+    id: &quot;ORD-20260415-004&quot;,
+    status: &quot;已完成&quot;,
+    date: &quot;2026-04-15 17:58:02&quot;,
+    invoice: &quot;CD-87654321&quot;,
+    total: 310,
+    receiver: &quot;林淑芬&quot;,
+    phone: &quot;0977-456-789&quot;,
+    address: &quot;高雄市前鎮區中山二路 88 號 2 樓&quot;,
+    items: [
+      { id: 2, name: &quot;手工鳳梨酥&quot;, qty: 4, price: 25 },
+      { id: 5, name: &quot;檸檬塔&quot;, qty: 2, price: 45 },
+      { id: 6, name: &quot;烏龍綠茶&quot;, qty: 3, price: 28 },
+      { id: 7, name: &quot;花生牛奶糖&quot;, qty: 2, price: 22 },
+      { id: 1, name: &quot;古早味麥芽餅&quot;, qty: 2, price: 35 },
+    ],
+  },
+  {
+    id: &quot;ORD-20260417-005&quot;,
+    status: &quot;處理中&quot;,
+    date: &quot;2026-04-17 11:30:00&quot;,
+    invoice: null,
+    total: 156,
+    receiver: &quot;張志豪&quot;,
+    phone: &quot;0921-654-321&quot;,
+    address: &quot;桃園市中壢區中北路 33 號 7 樓&quot;,
+    items: [
+      { id: 6, name: &quot;烏龍綠茶&quot;, qty: 1, price: 28 },
+      { id: 7, name: &quot;花生牛奶糖&quot;, qty: 3, price: 30 },
+      { id: 4, name: &quot;原味米餅&quot;, qty: 2, price: 20 },
+      { id: 3, name: &quot;黑糖珍珠奶茶&quot;, qty: 1, price: 30 },
+    ],
+  },
+])
+</code></pre>
+            </li>
+          </ul>
+          <h5 id="sec-73"><em>不切子元件</em></h5>
+          <ul>
+            <li>依照 HTML 範例產生訂單列表</li>
+            <li>把 HTML 切成用子元件呈現，包含資料傳遞及迴圈渲染(接下題)</li>
+            <li>
+              根據
+              <code>status</code>
+              用
+              <code>v-bind:class</code>
+              動態設定狀態徽章顏色：
+
+              <ul class="mb-3">
+                <li>
+                  已完成 ：
+                  <code>text-bg-success</code>
+                </li>
+                <li>
+                  處理中 ：
+                  <code>text-bg-warning</code>
+                </li>
+                <li>
+                  已取消 ：
+                  <code>text-bg-secondary</code>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <h5 id="sec-74"><em>OrderDetail.vue（子元件）</em></h5>
+          <ul>
+            <li>
+              建立一個「訂單」子元件
+              <code>src/components/OrderDetail.vue</code>
+              ，
+              <code>&lt;template&gt;</code>
+              內容來自
+              <code>src/views/ShopOrderView.vue</code>
+              移轉過來的
+            </li>
+            <li>
+              <code>OrderDetail.vue</code>
+              子元件需接收以下 props：
+              <code>id</code>
+              、
+              <code>status</code>
+              、
+              <code>date</code>
+              、
+              <code>total</code>
+              、
+              <code>items</code>
+
+              <pre><code class="language-none">import { defineProps } from &#39;vue&#39;
+const props = defineProps({
+  id: { type: string, required: true },
+  ...
+})
+</code></pre>
+            </li>
+            <li>
+              在
+              <code>OrderDetail.vue</code>
+              子元件用
+              <code>v-for</code>
+              渲染
+              <code>items</code>
+              品項列表
+            </li>
+          </ul>
+          <h5 id="sec-75"><em>ShopOrderView.vue（父元件）</em></h5>
+          <ul>
+            <li>
+              在
+              <code>ShopOrderView.vue</code>
+              父元件中，加入
+              <code>OrderDetail.vue</code>
+              子元件，並用
+              <code>v-for</code>
+              渲染
+              <code>orders</code>
+              陣列資料
+
+              <pre><code class="language-none">import OrderDetail from &quot;@/components/OrderDetail.vue&quot;
+</code></pre>
+              <pre><code class="language-none">&lt;OrderDetail id=&quot;&quot; status=&quot;&quot; /&gt;
+&lt;OrderDetail :id=&quot;&quot; :status=&quot;&quot; /&gt;
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-76">📝訂單卡片元件 - 子傳父</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客點擊「查看詳情」後，需彈窗該筆訂單的完整資訊。子元件偵測點擊，父元件決定顯示哪筆訂單的詳情。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          使用上一題，加入以下互動行為：
+
+          <h5 id="sec-77"><em>OrderDetail.vue（子元件）</em></h5>
+          <ul>
+            <li>
+              在
+              <code>OrderDetail.vue</code>
+              的「查看詳情」按鈕加上
+              <code>@click</code>
+              ，用
+              <code>defineEmits</code>
+              宣告並觸發
+              <code>view-detail</code>
+              事件，將整筆訂單物件傳給父元件
+
+              <pre><code class="language-none">import { defineEmits } from &quot;vue&quot;
+const emit = defineEmits([&quot;view-detail&quot;])
+emit(&quot;view-detail&quot;, id, status) //多個單值
+emit(&quot;view-detail&quot;, { id, status, date, total, items }) //物件
+</code></pre>
+            </li>
+          </ul>
+          <h5 id="sec-78"><em>ShopOrderView.vue（父元件）</em></h5>
+          <ul>
+            <li>
+              使用
+              <code>ref</code>
+              宣告
+              <code>showDetailModal</code>
+              變數，預設為
+              <code>false</code>
+            </li>
+            <li>
+              使用
+              <code>reactive</code>
+              宣告
+              <code>viewData</code>
+              物件，欄位與
+              <code>orders</code>
+              單一物件相同：
+            </li>
+            <li>
+              宣告
+              <code>handleViewDetail</code>
+              方法
+            </li>
+            <li>
+              監聽子元件的
+              <code>@view-detail</code>
+              事件，該事件觸發時，呼叫
+              <code>handleViewDetail</code>
+              方法設定
+              <code>showDetailModal = true</code>
+              ，並依照子元件回傳之物件的
+              <code>id</code>
+              比對
+              <code>orders</code>
+              的
+              <code>id</code>
+              後，回傳物件給
+              <code>viewData</code>
+            </li>
+            <li>
+              將
+              <code>viewData</code>
+              欄位用單向綁定在
+              <code>Modal</code>
+              區塊中
+
+              <pre><code class="language-none">&lt;OrderDetail :id=&quot;&quot; :status=&quot;&quot; @view-detail=&quot;handleViewDetail&quot; /&gt;
+</code></pre>
+              <pre><code class="language-none">function handleViewDetail(obj) { .. }
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-79">📝Slot 插槽</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            柑仔店許多功能都需要彈出視窗，但每個視窗的標題、內容、按鈕都不一樣。
+            建立一個可重複使用的
+            <code>AppModal.vue</code>
+            元件，用
+            <strong>具名插槽及預設插槽</strong>
+            分別開放
+            <code>header</code>
+            、
+            <code>default</code>
+            、
+            <code>footer</code>
+            三個區域，讓不同頁面各自填入自己的內容。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              建立一個「彈窗」的插槽子元件
+              <code>src/components/AppModal.vue</code>
+              及設計其
+              <code>&lt;template&gt;</code>
+              內容
+
+              <pre><code class="language-copy">&lt;div v-if=&quot;props.show&quot;&gt;
+  &lt;div class=&quot;modal-backdrop fade show&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;modal fade show d-block&quot; tabindex=&quot;-1&quot;&gt;
+    &lt;div class=&quot;modal-dialog&quot;&gt;
+      &lt;div class=&quot;modal-content&quot;&gt;
+        &lt;div class=&quot;modal-header&quot;&gt;
+          &lt;h5 class=&quot;modal-title&quot;&gt;
+            &lt;!-- 具名插槽 header --&gt;
+          &lt;/h5&gt;
+          &lt;button
+            type=&quot;button&quot;
+            class=&quot;btn-close&quot;
+            @click=&quot;emit(&#39;close&#39;)&quot;
+          &gt;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;modal-body&quot;&gt;
+          &lt;!-- 預設插槽 --&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;modal-footer&quot;&gt;
+          &lt;!-- 具名插槽 footer --&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+            </li>
+            <li>
+              <code>AppModal.vue</code>
+              子元件需接收 props：
+              <code>show</code>
+              ，且用
+              <code>defineEmits</code>
+              宣告並觸發
+              <code>close</code>
+              事件
+
+              <pre><code class="language-none">import { defineProps, defineEmits } from &quot;vue&quot;
+const props = defineProps({
+  show: {
+    type: Boolean,
+    default: false,
+  },
+})
+const emit = defineEmits([&quot;close&quot;])
+</code></pre>
+            </li>
+            <li>
+              定義兩個具名插槽，一個預設插槽：
+              <pre><code class="language-none">&lt;!-- 具名插槽 header --&gt;
+&lt;slot name=&quot;header&quot;&gt;&lt;/slot&gt;
+&lt;!-- 預設插槽 --&gt;
+&lt;slot&gt;&lt;/slot&gt;
+&lt;!-- 具名插槽 footer --&gt;
+&lt;slot name=&quot;footer&quot;&gt;&lt;/slot&gt;
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-80">📝發票資訊用 AppModal 顯示</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客點擊「發票」後，需彈窗該筆發票的完整資訊。子元件偵測點擊，父元件決定顯示哪筆發票的詳情。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>延續上題，加入以下互動行為：</li>
+            <li>
+              在
+              <code>ShopOrderView.vue</code>
+              中，使用
+              <code>AppModal</code>
+              元件
+
+              <pre><code class="language-none">import AppModal from &quot;@/components/AppModal.vue&quot;
+</code></pre>
+            </li>
+            <li>
+              於
+              <code>AppModal</code>
+              傳入
+              <code>:show</code>
+              屬性，以及監聽
+              <code>@close</code>
+              事件，以作用 Modal 開啟及關閉功能
+
+              <pre><code class="language-none">&lt;AppModal
+  :show=&quot;showInvoiceModal&quot;
+  @close=&quot;showInvoiceModal = false&quot;
+&gt;&lt;/AppModal&gt;
+</code></pre>
+            </li>
+            <li>
+              於
+              <code>&lt;AppModal&gt;&lt;/AppModal&gt;</code>
+              中，放入以下自訂內容至具名插槽
+              <code>header</code>
+              中：
+
+              <pre><code class="language-none">&lt;template #header&gt;
+  &lt;h5 class=&quot;fw-bold mb-0&quot;&gt;發票資訊&lt;/h5&gt;
+&lt;/template&gt;
+</code></pre>
+            </li>
+            <li>
+              於
+              <code>&lt;AppModal&gt;&lt;/AppModal&gt;</code>
+              中，放入以下自訂內容至具名插槽
+              <code>footer</code>
+              中：
+
+              <pre><code class="language-none">&lt;template #footer&gt;如發票有問題請聯繫客服!&lt;/template&gt;
+</code></pre>
+            </li>
+            <li>
+              於
+              <code>&lt;AppModal&gt;&lt;/AppModal&gt;</code>
+              中，放入以下自訂內容(不指定插槽名稱，則為預設)：
+
+              <pre><code class="language-copy">&lt;!-- 發票頂部 --&gt;
+&lt;div class=&quot;card-header text-center bg-secondary text-white py-3&quot;&gt;
+    &lt;div class=&quot;fw-bold fs-5&quot;&gt;電子發票證明聯&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;card-body px-4 py-3&quot;&gt;
+    &lt;!-- 發票號碼 --&gt;
+    &lt;div class=&quot;text-center mb-3&quot;&gt;
+      &lt;div class=&quot;invoice-number fw-bold fs-3&quot;&gt;AB-12345678&lt;/div&gt;
+      &lt;div class=&quot;text-body-secondary small&quot;&gt;
+        2026-04-17 14:32:08
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;hr /&gt;
+    &lt;!-- 品項明細 --&gt;
+    &lt;table class=&quot;table table-sm table-borderless small mb-0&quot;&gt;
+      &lt;thead&gt;
+        &lt;tr class=&quot;text-body-secondary&quot;&gt;
+          &lt;th&gt;品名&lt;/th&gt;
+          &lt;th class=&quot;text-center&quot;&gt;數量&lt;/th&gt;
+          &lt;th class=&quot;text-end&quot;&gt;單價&lt;/th&gt;
+          &lt;th class=&quot;text-end&quot;&gt;小計&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;古早味麥芽餅&lt;/td&gt;
+          &lt;td class=&quot;text-center&quot;&gt;2&lt;/td&gt;
+          &lt;td class=&quot;text-end&quot;&gt;35&lt;/td&gt;
+          &lt;td class=&quot;text-end&quot;&gt;70&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+    &lt;hr /&gt;
+    &lt;!-- 金額區 --&gt;
+    &lt;div class=&quot;d-flex justify-content-between small mb-1&quot;&gt;
+      &lt;span class=&quot;text-body-secondary&quot;&gt;銷售額合計&lt;/span&gt;
+      &lt;span&gt;NT$ 120&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;d-flex justify-content-between small mb-1&quot;&gt;
+      &lt;span class=&quot;text-body-secondary&quot;&gt;稅額(5%)&lt;/span&gt;
+      &lt;span&gt;NT$ 6&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;d-flex justify-content-between fw-bold mt-2&quot;&gt;
+      &lt;span&gt;總計&lt;/span&gt;
+      &lt;span class=&quot;text-primary fs-5&quot;&gt;NT$ 126&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+            </li>
+            <li>將發票所需之資料補全，步驟同前述</li>
+            <li>
+              增加發票按鈕顯示條件，當
+              <code>invoice</code>
+              不為
+              <code>null</code>
+              時，顯示「發票」按鈕
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-81">📝provide / inject - 元件跨層傳值</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            想讓所有子元件都知道目前登入的使用者名稱，但不想透過 Props
+            一層一層傳遞。 使用
+            <code>provide / inject</code>
+            讓父元件提供資料，深層子元件直接取用，不需要逐層傳遞 Props。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作（略）：</strong>
+          <ul>
+            <li>
+              在
+              <code>App.vue</code>
+              用
+              <code>provide</code>
+              提供目前登入的使用者名稱：
+              <pre><code class="language-none">import { provide } from &quot;vue&quot;
+provide(&quot;currentUser&quot;, &quot;阿明&quot;)
+</code></pre>
+            </li>
+            <li>
+              在程式中用
+              <code>inject</code>
+              取出使用者名稱並顯示：
+              <pre><code class="language-none">import { inject } from &quot;vue&quot;
+const currentUser = inject(&quot;currentUser&quot;)
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr />
+      <h3 id="sec-82">14｜.env 環境變數</h3>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            柑仔店系統即將大功告成，要提供測試，但開發環境、測試環境與正式環境的
+            API 網址不同，不能每次部署都手動改程式碼，需要用環境變數統一管理。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <h5 id="sec-83">📝建立 .env 檔</h5>
+          <ul>
+            <li>
+              在專案根目錄建立
+              <code>.env</code>
+              檔案，定義以下環境變數：
+
+              <pre><code>VITE_APP_TITLE=阿嬤柑仔店(本機)
+VITE_API_URL=https://api.dev.ganmadian.com
+</code></pre>
+            </li>
+            <li>
+              在專案根目錄建立
+              <code>.env.sit</code>
+              檔案，定義以下環境變數：
+
+              <pre><code>VITE_APP_TITLE=阿嬤柑仔店(測試)
+VITE_API_URL=https://api.sit.ganmadian.com
+</code></pre>
+            </li>
+            <li>
+              在專案根目錄建立
+              <code>.env.production</code>
+              檔案，定義以下環境變數：
+
+              <pre><code>VITE_APP_TITLE=阿嬤柑仔店
+VITE_API_URL=https://api.ganmadian.com
+</code></pre>
+            </li>
+            <li>
+              在
+              <code>App.vue</code>
+              中使用
+              <code>import.meta.env.VITE_APP_TITLE</code>
+              取出系統名稱並顯示在頁面上
+            </li>
+          </ul>
+          <h5 id="sec-84">📝切換環境</h5>
+          <ul>
+            <li>
+              在
+              <code>package.json</code>
+              的
+              <code>scripts</code>
+              中，針對不同環境加上
+              <code>--mode</code>
+              參數：
+
+              <pre><code class="language-noneon">&quot;scripts&quot;: {
+  &quot;dev&quot;: &quot;vite&quot;,
+  &quot;sit&quot;: &quot;vite --mode sit&quot;,
+  &quot;prod&quot;: &quot;vite --mode production&quot;,
+}
+</code></pre>
+            </li>
+            <li>
+              執行對應指令切換環境：
+              <pre><code class="language-bash">npm run dev       # 本機開發，讀取 .env
+npm run sit       # 測試環境預覽，讀取 .env + .env.sit
+npm run prod      # 正式環境預覽，讀取 .env + .env.prod
+</code></pre>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <strong>重點：</strong>
+          <ul>
+            <li>
+              Vite 預設讀取
+              <code>.env</code>
+              ；指定
+              <code>--mode sit</code>
+              時會額外讀取
+              <code>.env.sit</code>
+              ，同名變數以
+              <code>.env.sit</code>
+              為優先
+            </li>
+            <li>
+              環境變數名稱一定要以
+              <code>VITE_</code>
+              開頭，否則 Vite 不會將它暴露給前端
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr />
+      <h3 id="sec-85">15｜Axios 前後端串接</h3>
+      <h4 id="sec-86">📝安裝 Axios</h4>
+      <ul>
+        <li>
+          終端機執行安裝指令：
+          <pre><code class="language-bash">npm install axios
+</code></pre>
+        </li>
+        <li>
+          在需要呼叫 API 的頁面引入：
+          <pre><code class="language-none">import axios from &quot;axios&quot;
+</code></pre>
+        </li>
+      </ul>
+      <h4 id="sec-87">📝串接 API 的商品 CRUD</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            後台管理員需要透過 API
+            對商品資料進行完整的新增、查詢、修改、刪除，當操作完成後自動刷新列表。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <h5 id="sec-88"><em>商品管理</em></h5>
+          <ul>
+            <li>
+              建立一個「商品管理」頁面
+              <code>src/views/admin/ProductView.vue</code>
+              及設計其
+              <code>&lt;template&gt;</code>
+              內容
+
+              <pre><code class="language-copy">&lt;h3 class=&quot;fw-bold mb-4&quot;&gt;商品管理&lt;/h3&gt;
+
+&lt;div class=&quot;mb-4&quot;&gt;
+  &lt;button
+    type=&quot;button&quot;
+    class=&quot;btn btn-success&quot;
+    data-bs-toggle=&quot;modal&quot;
+    data-bs-target=&quot;#staticBackdrop&quot;
+  &gt;
+    新增
+  &lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;card mb-4&quot;&gt;
+  &lt;div
+    class=&quot;card-header d-flex justify-content-between align-items-center&quot;
+  &gt;
+    &lt;span class=&quot;fw-semibold&quot;&gt;商品列表&lt;/span&gt;
+    &lt;span&gt;共 X 筆&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;card-body p-0&quot;&gt;
+    &lt;table class=&quot;table mb-0 align-middle&quot;&gt;
+      &lt;thead class=&quot;table-light&quot;&gt;
+        &lt;tr&gt;
+          &lt;th&gt;#&lt;/th&gt;
+          &lt;th&gt;圖&lt;/th&gt;
+          &lt;th&gt;商品名稱&lt;/th&gt;
+          &lt;th&gt;分類&lt;/th&gt;
+          &lt;th class=&quot;text-end&quot;&gt;售價&lt;/th&gt;
+          &lt;th class=&quot;text-center&quot;&gt;庫存&lt;/th&gt;
+          &lt;th&gt;&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td class=&quot;text-body-secondary small&quot;&gt;1&lt;/td&gt;
+          &lt;td&gt;&lt;img src=&quot;&quot; class=&quot;img-thumbnail&quot; /&gt;&lt;/td&gt;
+          &lt;td class=&quot;fw-semibold&quot;&gt;古早味麥芽餅&lt;/td&gt;
+          &lt;td&gt;
+            &lt;span class=&quot;badge text-bg-light text-dark border&quot;&gt;零食&lt;/span&gt;
+          &lt;/td&gt;
+          &lt;td class=&quot;text-end&quot;&gt;NT$ 35&lt;/td&gt;
+          &lt;td class=&quot;text-center&quot;&gt;28&lt;/td&gt;
+          &lt;td class=&quot;text-end&quot;&gt;
+            &lt;button
+              type=&quot;button&quot;
+              class=&quot;btn btn-sm btn-outline-primary me-1&quot;
+            &gt;
+              編輯
+            &lt;/button&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-outline-danger&quot;&gt;
+              刪除
+            &lt;/button&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+            </li>
+            <li>
+              為「商品管理」頁面建立路由設定以及在
+              <code>App.vue</code>
+              導覽列使用
+              <code>&lt;RouterLink&gt;</code>
+              建立連結
+            </li>
+            <li>
+              使用
+              <code>ref</code>
+              宣告
+              <code>showModal</code>
+              變數，預設為
+              <code>false</code>
+            </li>
+            <li>
+              為「新增」按鈕加上
+              <code>@click</code>
+              事件監聽，當按下新增時，
+              <code>showModal = true</code>
+            </li>
+            <li>
+              使用
+              <code>AppModal.vue</code>
+              ，以及自訂內容放入插槽：
+
+              <pre><code class="language-copy">&lt;AppModal :show=&quot;showModal&quot; @close=&quot;showModal = false&quot;&gt;
+  &lt;template #header&gt;
+    &lt;h5 class=&quot;fw-bold mb-0&quot;&gt;新增商品&lt;/h5&gt;
+  &lt;/template&gt;
+  &lt;div class=&quot;mb-3&quot;&gt;
+    &lt;label class=&quot;form-label&quot;&gt;商品名稱&lt;/label&gt;
+    &lt;input type=&quot;text&quot; class=&quot;form-control&quot; /&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;mb-3&quot;&gt;
+    &lt;label class=&quot;form-label&quot;&gt;圖片網址&lt;/label&gt;
+    &lt;input type=&quot;text&quot; class=&quot;form-control&quot; /&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;mb-3&quot;&gt;
+    &lt;label class=&quot;form-label&quot;&gt;分類&lt;/label&gt;
+    &lt;select class=&quot;form-select&quot;&gt;
+      &lt;option value=&quot;&quot;&gt;請選擇分類&lt;/option&gt;
+      &lt;option value=&quot;零食&quot;&gt;零食&lt;/option&gt;
+      &lt;option value=&quot;糕點&quot;&gt;糕點&lt;/option&gt;
+      &lt;option value=&quot;飲料&quot;&gt;飲料&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;row g-2 mb-3&quot;&gt;
+    &lt;div class=&quot;col&quot;&gt;
+      &lt;label class=&quot;form-label&quot;&gt;售價（NT$）&lt;/label&gt;
+      &lt;input type=&quot;number&quot; class=&quot;form-control&quot; placeholder=&quot;0&quot; min=&quot;0&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;col&quot;&gt;
+      &lt;label class=&quot;form-label&quot;&gt;庫存數量&lt;/label&gt;
+      &lt;input type=&quot;number&quot; class=&quot;form-control&quot; placeholder=&quot;0&quot; min=&quot;0&quot; /&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;mb-4&quot;&gt;
+    &lt;label class=&quot;form-label&quot;&gt;商品描述&lt;/label&gt;
+    &lt;textarea
+      class=&quot;form-control&quot;
+      rows=&quot;3&quot;
+      placeholder=&quot;請輸入商品描述&quot;
+    &gt;&lt;/textarea&gt;
+  &lt;/div&gt;
+  &lt;template #footer&gt;
+    &lt;button
+      type=&quot;button&quot;
+      class=&quot;btn btn-secondary&quot;
+      @click=&quot;showModal = false&quot;
+    &gt;
+      取消
+    &lt;/button&gt;
+    &lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot;&gt;儲存&lt;/button&gt;
+  &lt;/template&gt;
+&lt;/AppModal&gt;
+</code></pre>
+            </li>
+          </ul>
+          <h5 id="sec-89"><em>API 清單</em></h5>
+          <table>
+            <thead>
+              <tr>
+                <th>操作</th>
+                <th>方法</th>
+                <th>路由</th>
+                <th>請求 Body</th>
+                <th>說明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>查詢全部</td>
+                <td>GET</td>
+                <td><code>/api/product</code></td>
+                <td>—</td>
+                <td>取得所有商品列表</td>
+              </tr>
+              <tr>
+                <td>查詢單筆</td>
+                <td>GET</td>
+                <td><code>/api/product/:id</code></td>
+                <td>—</td>
+                <td>取得指定商品</td>
+              </tr>
+              <tr>
+                <td>新增</td>
+                <td>POST</td>
+                <td><code>/api/product</code></td>
+                <td><code>{ name, category, price, stock, desc }</code></td>
+                <td>新增商品</td>
+              </tr>
+              <tr>
+                <td>修改</td>
+                <td>PUT</td>
+                <td><code>/api/product/:id</code></td>
+                <td><code>{ name, category, price, stock, desc }</code></td>
+                <td>修改商品</td>
+              </tr>
+              <tr>
+                <td>刪除</td>
+                <td>DELETE</td>
+                <td><code>/api/product/:id</code></td>
+                <td>—</td>
+                <td>刪除商品</td>
+              </tr>
+            </tbody>
+          </table>
+          <h5 id="sec-90"><em>查詢（Read）</em></h5>
+          <ul>
+            <li>
+              宣告
+              <code>products</code>
+              陣列（預設空陣列）
+            </li>
+            <li>
+              建立
+              <code>fetchProducts</code>
+              方法，用
+              <code>axios.get</code>
+              取得商品列表並存入
+              <code>products</code>
+            </li>
+            <li>
+              使用
+              <code>onMounted</code>
+              在頁面載入後自動呼叫
+              <code>fetchProducts</code>
+            </li>
+            <li>
+              用
+              <code>v-for</code>
+              將
+              <code>products</code>
+              渲染成表格列
+
+              <pre><code class="language-none">const products = ref([])
+
+async function fetchProducts() {
+  const res = await axios.get(&quot;https://localhost/api/product&quot;)
+  products.value = res.data
+}
+
+onMounted(() =&gt; fetchProducts())
+</code></pre>
+            </li>
+          </ul>
+          <h5 id="sec-91"><em>新增（Create）</em></h5>
+          <ul>
+            <li>
+              宣告
+              <code>form</code>
+              物件，用
+              <code>v-model</code>
+              綁定表單各欄位
+
+              <pre><code class="language-none">const form = reactive({
+  name: &quot;&quot;,
+  imageUrl: &quot;&quot;,
+  category: &quot;&quot;,
+  price: 0,
+  stock: 0,
+  desc: &quot;&quot;,
+})
+</code></pre>
+            </li>
+            <li>
+              建立
+              <code>addProduct</code>
+              方法，用
+              <code>axios.post</code>
+              送出新商品
+
+              <pre><code class="language-none">axios.post(&quot;https://localhost/api/product&quot;, form)
+</code></pre>
+            </li>
+            <li>
+              成功後清空
+              <code>form</code>
+              並呼叫
+              <code>fetchProducts</code>
+              重新載入列表
+            </li>
+          </ul>
+          <h5 id="sec-92"><em>編輯（Update）</em></h5>
+          <ul>
+            <li>
+              使用
+              <code>ref</code>
+              宣告
+              <code>editId</code>
+              變數，預設為
+              <code>null</code>
+              ，用於記錄目前編輯的商品 id
+            </li>
+            <li>
+              建立
+              <code>editProduct(productId)</code>
+              ，用
+              <code>axios.get</code>
+              取得單筆資料，且將商品資料複製進
+              <code>form</code>
+              ，並記錄
+              <code>editId</code>
+            </li>
+            <li>
+              建立
+              <code>updateProduct</code>
+              方法，用
+              <code>axios.put</code>
+              送出修改
+            </li>
+            <li>
+              用
+              <code>v-if</code>
+              判斷
+              <code>editId</code>
+              決定表單顯示「新增」或「儲存」按鈕
+
+              <pre><code class="language-none">await axios.get(`https://localhost/api/product/${id}`)
+</code></pre>
+            </li>
+          </ul>
+          <h5 id="sec-93"><em>刪除（Delete）</em></h5>
+          <ul>
+            <li>
+              建立
+              <code>deleteProduct(id)</code>
+              方法，跳出確認框後呼叫
+              <code>axios.delete</code>
+
+              <pre><code class="language-none">await axios.delete(`https://localhost/api/product/${id}`)
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-94">📝為 Axios 實作模組及增加攔截器</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            柑仔店的後台 API 都是固定的來源網址，每次要重複寫很麻煩，而且 API
+            需要驗證身份才能存取，每支 API 都必須在 Header 夾帶 Token。
+            若每次呼叫都手動加，不僅麻煩也容易漏掉。 透過建立 Axios
+            模組+攔截器，可以在
+            <strong>送出請求前</strong>
+            自動附加 Token、在
+            <strong>收到回應後</strong>
+            統一處理錯誤，讓所有 API 呼叫都能享有一致的前置與後置處理。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <h5 id="sec-95"><em>建立 Axios 實例</em></h5>
+          <ul>
+            <li>
+              建立
+              <code>src/service/api.js</code>
+              ，以
+              <code>axios.create()</code>
+              建立專屬實例，統一設定
+              <code>baseURL</code>
+              與
+              <code>timeout</code>
+              ：
+
+              <pre><code class="language-none">import axios from &quot;axios&quot;
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL, //環境變數
+  timeout: 30000, //連線逾時
+})
+export default api
+</code></pre>
+            </li>
+            <li>
+              後續將在此實例上掛載攔截器，並在各元件
+              <code>import api from &#39;@/service/api.js&#39;</code>
+              取代原本的
+              <code>axios</code>
+            </li>
+          </ul>
+          <h5 id="sec-96"><em>請求攔截器 - 自動附加 Token</em></h5>
+          <ul>
+            <li>
+              在
+              <code>api.js</code>
+              中，對實例加入
+              <strong>請求攔截器（request interceptor）</strong>
+              ：
+
+              <pre><code class="language-none">api.interceptors.request.use(
+  (config) =&gt; {
+    const token = null
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) =&gt; Promise.reject(error),
+)
+</code></pre>
+              <strong>重點：</strong>
+              <ul>
+                <li>
+                  若 Token 存在，設定
+                  <code>Authorization</code>
+                  Header
+                </li>
+                <li>
+                  最後必須
+                  <code>return config</code>
+                  ，否則請求不會送出
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <h5 id="sec-97"><em>回應攔截器 — 統一錯誤處理</em></h5>
+          <ul>
+            <li>
+              在
+              <code>api.js</code>
+              中，繼續加入
+              <strong>回應攔截器（response interceptor）</strong>
+              ：
+
+              <pre><code class="language-none">api.interceptors.response.use(
+  (response) =&gt; response,
+  (error) =&gt; {
+    const status = error.response?.status
+    if (status == 401) {
+      alert(&quot;登入已過期，請重新登入&quot;)
+      window.location.href = &quot;/login&quot;
+    } else if (status == 403) {
+      alert(&quot;您沒有執行此操作的權限&quot;)
+    } else if (status &gt;= 500) {
+      alert(&quot;伺服器發生錯誤，請稍後再試&quot;)
+    }
+    return Promise.reject(error)
+  },
+)
+</code></pre>
+              <strong>重點：</strong>
+              <ul>
+                <li>
+                  成功回應直接
+                  <code>return response</code>
+                  ，不做額外處理
+                </li>
+                <li>
+                  <code>error.response?.status</code>
+                  用可選鏈取得 HTTP 狀態碼（網路斷線時
+                  <code>response</code>
+                  可能為
+                  <code>undefined</code>
+                  ）
+                </li>
+                <li>
+                  401 → 導向登入頁；403 → 提示無權限；5xx → 提示伺服器錯誤
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <h5 id="sec-98"><em>將 api 模組套用至 ProductView2.vue</em></h5>
+          <ul>
+            <li>
+              複製
+              <code>admin/ProductView.vue</code>
+              為
+              <code>admin/ProductView2.vue</code>
+            </li>
+            <li>
+              將
+              <code>src\router\index.js</code>
+              路由設定中
+              <code>name: &#39;admin-product&#39;</code>
+              對應的
+              <code>component</code>
+              改為
+              <code>admin/ProductView2.vue</code>
+            </li>
+            <li>
+              將
+              <code>admin/ProductView2.vue</code>
+              中的
+              <code>import axios from &#39;axios&#39;</code>
+              改為
+              <code>import api from &#39;@/service/api&#39;</code>
+            </li>
+            <li>
+              把所有
+              <code>axios.get / axios.post / axios.put / axios.delete</code>
+              替換為
+              <code>api.get / api.post / api.put / api.delete</code>
+            </li>
+            <li>修正所有的 api url</li>
+          </ul>
+          <h5 id="sec-99">
+            <em>切換至sit環境試試</em>
+            .
+          </h5>
+          <ul>
+            <li>
+              調整
+              <code>.env.sit</code>
+              檔案，將
+              <code>VITE_API_URL</code>
+              環境變數改為
+              <code>待課堂提供</code>
+
+              <pre><code>VITE_API_URL=XXXXXXXXXXXXXXXXXX
+</code></pre>
+            </li>
+            <li>
+              執行以下指令啟動開發伺服器：
+              <pre><code class="language-bash">npm run sit
+</code></pre>
+            </li>
+            <li>
+              檢查
+              <code>admin/ProductView2.vue</code>
+              功能是否正常，是否可成功連上 sit 的 api url
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr />
+      <h2 id="sec-100">最後關卡</h2>
+      <h3 id="sec-101">16｜整合登入驗證及登出</h3>
+      <ul>
+        <li>登入流程總覽：</li>
+      </ul>
+      <pre><code class="language-mermaid">sequenceDiagram
+  participant U as 使用者
+  participant FE as 前端（Vue + Pinia）
+  participant API as 後端 API
+  participant AUTH as 認證服務（JWT）
+
+      U-&gt;&gt;FE: 輸入帳號密碼
+      FE-&gt;&gt;API: POST /api/user/login
+      API-&gt;&gt;AUTH: 驗證帳號密碼
+      AUTH--&gt;&gt;API: 驗證結果（成功）
+      API-&gt;&gt;AUTH: 產生 JWT Token
+      AUTH--&gt;&gt;API: 回傳 Token
+      API--&gt;&gt;FE: 回傳 JWT Token
+      FE-&gt;&gt;FE: 存入 useAuthStore（Pinia）
+</code></pre>
+      <h4 id="sec-102">📝後端 - 登入 API 回傳 JWT Token</h4>
+      <ul>
+        <li>
+          <strong>說明：</strong>
+          <blockquote>
+            伺服器驗證帳號密碼後，產生含使用者資訊的 JWT Token（有效期 8
+            小時），回傳給前端。 前端後續每次 API 請求都需在 Header 帶上此
+            Token，伺服器透過
+            <code>[Authorize]</code>
+            進行驗證。
+          </blockquote>
+        </li>
+        <li>
+          <strong>
+            後端已完成
+            <code>server/Controllers/UserController.cs</code>
+            ，規格如下：
+          </strong>
+
+          <pre><code>POST /api/user/login
+</code></pre>
+          請求 Body：
+          <pre><code class="language-noneon">{ &quot;account&quot;: &quot;orange&quot;, &quot;password&quot;: &quot;1234&quot; }
+</code></pre>
+          成功回應（200）：
+          <pre><code class="language-noneon">{
+  &quot;token&quot;: &quot;eyJhbGci...&quot;,
+  &quot;name&quot;: &quot;小橘&quot;,
+  &quot;account&quot;: &quot;orange&quot;,
+  &quot;role&quot;: &quot;member&quot; //或admin
+}
+</code></pre>
+
+          失敗回應（404）：
+          <code>帳號或密碼錯誤</code>
+        </li>
+        <li>
+          <strong>可用測試帳號：</strong>
+          <table>
+            <thead>
+              <tr>
+                <th>帳號</th>
+                <th>密碼</th>
+                <th>角色</th>
+                <th>可進入</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>orange</td>
+                <td>1234</td>
+                <td>member</td>
+                <td>前台商城 /member</td>
+              </tr>
+              <tr>
+                <td>flower</td>
+                <td>1234</td>
+                <td>member</td>
+                <td>前台商城 /member</td>
+              </tr>
+              <tr>
+                <td>admin</td>
+                <td>admin1234</td>
+                <td>admin</td>
+                <td>後台管理 /admin</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+      <h4 id="sec-103">📝建立登入及登出</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            經評估柑仔店的權限控管需再嚴謹一些，包含需登入後，會員才能購買商品，管理者才能管理等，為此須增加登入及登出功能，
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              建立一個「登入」頁面
+              <code>LoginView.vue</code>
+              及設計其
+              <code>&lt;template&gt;</code>
+              內容
+
+              <pre><code class="language-copy">&lt;div class=&quot;col-md-4 my-5 m-auto&quot;&gt;
+  &lt;h3 class=&quot;mb-4 fw-bold&quot;&gt;登入&lt;/h3&gt;
+
+  &lt;div class=&quot;mb-3&quot;&gt;
+    &lt;label class=&quot;form-label&quot;&gt;帳號&lt;/label&gt;
+    &lt;input type=&quot;text&quot; class=&quot;form-control&quot; /&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;mb-3&quot;&gt;
+    &lt;label class=&quot;form-label&quot;&gt;密碼&lt;/label&gt;
+    &lt;input type=&quot;password&quot; class=&quot;form-control&quot; /&gt;
+  &lt;/div&gt;
+
+  &lt;button class=&quot;btn btn-primary w-100 py-2&quot; type=&quot;button&quot;&gt;登入&lt;/button&gt;
+&lt;/div&gt;
+</code></pre>
+            </li>
+            <li>
+              在
+              <code>src\router\index.js</code>
+              路由中，加入
+              <code>login</code>
+              路由設定
+            </li>
+            <li>
+              在
+              <code>App.vue</code>
+              導覽列使用
+              <code>&lt;RouterLink&gt;</code>
+              建立「登入」，使用
+              <code>&lt;a&gt;</code>
+              建立「登出」``
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-104">📝建立 useAuthStore</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            登入後取得的 Token、使用者資訊與
+            <strong>角色（role）</strong>
+            需要在多個頁面共用。角色分為
+            <code>member</code>
+            （一般會員）與
+            <code>admin</code>
+            （後台管理員），路由守衛將依 role 決定能進入哪些頁面。使用
+            <code>pinia-plugin-persistedstate</code>
+            存入 localStorage，重新整理後仍保持登入狀態。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              建立
+              <code>src/stores/auth.js</code>
+              ：
+
+              <pre><code class="language-none">import { ref, computed } from &quot;vue&quot;
+import { defineStore } from &quot;pinia&quot;
+
+export const useAuthStore = defineStore(
+  &quot;auth&quot;,
+  () =&gt; {
+    const token = ref(&quot;&quot;)
+    const name = ref(&quot;&quot;)
+    const account = ref(&quot;&quot;)
+    const role = ref(&quot;&quot;) // &quot;member&quot; | &quot;admin&quot;
+
+    function setAuth(data) {
+      token.value = data.token
+      name.value = data.name
+      account.value = data.account
+      role.value = data.role
+    }
+
+    function clearAuth() {
+      token.value = &quot;&quot;
+      name.value = &quot;&quot;
+      account.value = &quot;&quot;
+      role.value = &quot;&quot;
+    }
+
+    const isLoggedIn = computed(() =&gt; token.value !== &quot;&quot;)
+    const isAdmin = computed(() =&gt; role.value === &quot;admin&quot;)
+
+    return {
+      token,
+      name,
+      account,
+      role,
+      isLoggedIn,
+      isAdmin,
+      setAuth,
+      clearAuth,
+    }
+  },
+  { persist: true },
+)
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-105">📝登入表單串接 API</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客在登入頁面輸入帳號密碼，送出後呼叫後端 API。成功後將 Token 存入
+            <code>useAuthStore</code>
+            並導向首頁；失敗則顯示錯誤訊息。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              在
+              <code>LoginView.vue</code>
+              中加入登入邏輯：
+
+              <pre><code class="language-none">import { ref } from &quot;vue&quot;
+import { useRouter } from &quot;vue-router&quot;
+import { useAuthStore } from &quot;@/stores/auth&quot;
+import api from &quot;@/service/api&quot;
+
+const account = ref(&quot;&quot;)
+const password = ref(&quot;&quot;)
+
+const router = useRouter()
+const authStore = useAuthStore()
+
+async function login() {
+  try {
+    const res = await api.post(&quot;login&quot;, {
+      account: account.value,
+      password: password.value,
+    })
+    authStore.setAuth(res.data)
+    router.push({ name: &quot;home&quot; })
+  } catch {
+    alert(&quot;帳號或密碼錯誤，請重新輸入&quot;)
+  }
+}
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-106">📝將 useAuthStore 的 token 放至 api 請求攔截器中</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            使用者登入後，後續所有 API 請求都需要帶上 Token
+            進行身份驗證。透過請求攔截器自動將 Token 添加至每個請求的
+            Authorization Header，避免重複在各個 API 呼叫中手動添加。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              在
+              <code>api.js</code>
+              的請求攔截器（request interceptor）token 補上 useAuthStore 的
+              token：
+
+              <pre><code class="language-none">api.interceptors.request.use(
+  (config) =&gt; {
+    const authStore = useAuthStore()
+    const token = authStore.token
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) =&gt; Promise.reject(error),
+)
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-107">📝路由守衛（Navigation Guard）</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            購物車、結帳、訂單紀錄等頁面（
+            <code>/member/...</code>
+            ）需要一般會員登入才能進入；後台管理（
+            <code>/admin/...</code>
+            ）只有 admin
+            角色才能存取。未登入或權限不足時，自動導向登入頁，防止未授權存取。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              在
+              <code>src/router/index.js</code>
+              中，對路由設定
+              <code>meta</code>
+              標記：
+
+              <pre><code class="language-none">// 為需要 member 角色的路由加上 meta: { requireMember: true }
+{
+  path: &#39;/member&#39;,
+  meta: { requireMember: true },
+  children: [ ...  ],
+},
+// 為需要 admin 角色的路由加上 meta: { requireAdmin: true }
+{
+  path: &#39;/admin&#39;,
+  meta: { requireAdmin: true },
+}
+</code></pre>
+            </li>
+            <li>
+              在路由設定最後加入全域守衛：
+              <pre><code class="language-none">//使用 auth store
+import { useAuthStore } from &quot;@/stores/auth&quot;
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [...]
+})
+
+//加入全域守衛
+router.beforeEach((to) =&gt; {
+  const authStore = useAuthStore()
+  // 需要 member 角色（未登入或非 member → 導向登入）
+  if (
+    (to.meta.requireMember &amp;&amp; !authStore.isLoggedIn)||
+    (to.meta.requireMember &amp;&amp; authStore.isLoggedIn &amp;&amp; authStore.isAdmin)
+  ) {
+    return { path: &quot;/login&quot; }
+  }
+  // 需要 admin 角色（未登入或非 admin → 導向登入）
+  if (to.meta.requireAdmin &amp;&amp; !authStore.isAdmin) {
+    return { path: &quot;/login&quot; }
+  }
+})
+
+export default router
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-108">📝登出</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            顧客點擊「登出」按鈕後，清除 Pinia 中的 Token
+            與使用者資訊，並導向登入頁面。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          <ul>
+            <li>
+              在
+              <code>App.vue</code>
+              的「登出」 按鈕加入邏輯：
+
+              <pre><code class="language-none">import { useAuthStore } from &quot;@/stores/auth&quot;
+import { useRouter } from &quot;vue-router&quot;
+
+const authStore = useAuthStore()
+const router = useRouter()
+
+function logout() {
+  authStore.clearAuth()
+  router.push(&quot;/login&quot;)
+}
+</code></pre>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4 id="sec-109">📝整理 App.vue 連結顯示時機</h4>
+      <ul>
+        <li>
+          <strong>情境：</strong>
+          <blockquote>
+            系統已導入帳號權限控管，因此，必須針對特定頁面預先隱藏，或特定條件時才出現。
+          </blockquote>
+        </li>
+        <li>
+          <strong>實作：</strong>
+          使用
+          <code>App.vue</code>
+
+          <ul>
+            <li>
+              當使用者登入狀態 = 未登入
+              <code>isLoggedIn = false</code>
+              時，顯示「登入」、「註冊」連結
+            </li>
+            <li>
+              當使用者登入狀態 = 已登入
+              <code>isLoggedIn = true</code>
+              時，顯示「登出」連結
+            </li>
+            <li>
+              當使用者登入狀態 = 已登入
+              <code>isLoggedIn = true</code>
+              且為管理者
+              <code>isAdmin=true</code>
+              時，顯示「商品管理」
+            </li>
+            <li>
+              當使用者登入狀態 = 已登入
+              <code>isLoggedIn = true</code>
+              且不為管理者
+              <code>isAdmin=false</code>
+              時，顯示「購物車」、「訂單紀錄」
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr />
+      <h1 id="sec-110">大功告成！恭喜各位&quot;今天&quot;可以下班了。</h1>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+    <script>
+      document.querySelectorAll("pre code").forEach(function (el) {
+        if (window.hljs) hljs.highlightElement(el)
+      })
+      document.querySelectorAll("pre").forEach(function (pre) {
+        var btn = document.createElement("button")
+        btn.type = "button"
+        btn.className = "btn btn-sm "
+        btn.textContent = "複製"
+        btn.addEventListener("click", function () {
+          var text = pre.querySelector("code").innerText
+          var done = function () {
+            btn.textContent = "複製✓"
+            setTimeout(function () {
+              btn.textContent = "複製"
+            }, 1500)
+          }
+          if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(done)
+          } else {
+            var ta = document.createElement("textarea")
+            ta.value = text
+            document.body.appendChild(ta)
+            ta.select()
+            document.execCommand("copy")
+            ta.remove()
+            done()
+          }
+        })
+        var tools = document.createElement("div")
+        tools.className = "pre-tools"
+        pre.appendChild(tools)
+        var code = pre.querySelector("code")
+        if (code && code.classList.contains("language-copy")) {
+          pre.classList.add("collapsible", "collapsed")
+          var tg = document.createElement("button")
+          tg.type = "button"
+          tg.className = "btn btn-sm "
+          tg.textContent = "▼ 展開"
+          tg.addEventListener("click", function () {
+            var c = pre.classList.toggle("collapsed")
+            tg.textContent = c ? "▼ 展開" : "▲ 收合"
+          })
+          tools.appendChild(tg)
+        }
+        tools.appendChild(btn)
+      })
+      document.querySelectorAll("#tocCanvas a").forEach(function (a) {
+        a.addEventListener("click", function () {
+          var oc = bootstrap.Offcanvas.getInstance(
+            document.getElementById("tocCanvas"),
+          )
+          if (oc) oc.hide()
+        })
+      })
+    </script>
+  </body>
+</html>

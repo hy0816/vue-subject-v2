@@ -354,7 +354,6 @@
                 <tr>
                   <td>
                     <div class="fw-semibold">古早味麥芽餅</div>
-                    <small class="text-body-secondary">零食</small>
                   </td>
                   <td class="text-center">NT$ 35</td>
                   <td>
@@ -1270,7 +1269,7 @@
 - **實作：**
   - 複製 `ShopView.vue` 為 `ShopView2.vue`，複製 `ShopProductView.vue` 為 `ShopProductView2.vue`
   - 為 `ShopView2.vue` 及 `ShopProductView2.vue` 建立路由 `list2`、`product2`
-  - 在 `App.vue` 建立 `<RouterLink>` 導向 路由 `list2`
+  - 在 `App.vue` 建立 `<RouterLink>` 導向路由 `list2`；注意：因為操作流程特性，故此處不設 `product2` 的連結。
   - 在 `ShopView2.vue` 的商品卡片，點擊時用 `<RouterLink>` 帶導向至：
     ```html
     <RouterLink
@@ -1495,7 +1494,7 @@
     })
     ```
 
-  - 使用 `ref` 宣告 `done`，預設 `false`，並將 `done` 以 `v-model` 綁定至「確認送出訂單」按鈕
+  - 使用 `ref` 宣告 `done`，預設 `false`，並將 `done` 以 `v-bind:disabled` 綁定至「確認送出訂單」按鈕
   - 用 `watchEffect` 處理自動追蹤， `done.value = info.name != '' &&  info.phone !='' && info.address != ''`
     ```js
     watchEffect(() => {
@@ -1516,26 +1515,6 @@
   ##### _不切子元件_
   - 依照 HTML 範例產生訂單列表
   - 把 HTML 切成用子元件呈現，包含資料傳遞及迴圈渲染(接下題)
-
-  ##### _OrderDetail.vue（子元件）_
-  - 建立一個「訂單」子元件 `src/components/OrderDetail.vue` ， `<template>` 內容來自 `src/views/ShopOrderView.vue` 移轉過來的
-  - `OrderDetail.vue` 子元件需接收以下 props：`id`、`status`、`date`、`total`、`items`
-
-    ```js
-    import { defineProps } from 'vue'
-    const props = defineProps({
-      id: { type: string, required: true },
-      ...
-    })
-    ```
-
-  - 在 `OrderDetail.vue` 子元件用 `v-for` 渲染 `items` 品項列表
-  - 根據 `status` 用 `v-bind:class` 動態設定狀態徽章顏色：
-    - `已完成`：`text-bg-success`
-    - `處理中`：`text-bg-warning`
-    - `已取消`：`text-bg-secondary`
-
-  ##### _ShopOrderView.vue（父元件）_
   - 使用 `ShopOrderView.vue` ，宣告以下 5 筆陣列：
 
     ```js
@@ -1621,6 +1600,27 @@
       },
     ])
     ```
+
+  - 根據 `status` 用 `v-bind:class` 動態設定狀態徽章顏色：
+    - `已完成`：`text-bg-success`
+    - `處理中`：`text-bg-warning`
+    - `已取消`：`text-bg-secondary`
+	
+  ##### _OrderDetail.vue（子元件）_
+  - 建立一個「訂單」子元件 `src/components/OrderDetail.vue` ， `<template>` 內容來自 `src/views/ShopOrderView.vue` 移轉過來的
+  - `OrderDetail.vue` 子元件需接收以下 props：`id`、`status`、`date`、`total`、`items`
+
+    ```js
+    import { defineProps } from 'vue'
+    const props = defineProps({
+      id: { type: string, required: true },
+      ...
+    })
+    ```
+
+  - 在 `OrderDetail.vue` 子元件用 `v-for` 渲染 `items` 品項列表
+
+  ##### _ShopOrderView.vue（父元件）_
 
   - 在 `ShopOrderView.vue` 父元件中，加入 `OrderDetail.vue` 子元件，並用 `v-for` 渲染 `orders` 陣列資料
 
